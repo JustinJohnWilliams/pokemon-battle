@@ -1,16 +1,57 @@
 import { Component } from 'react';
 import req from 'reqwest';
-import { bind, map } from 'lodash';
+import { bind, map, find, sortBy } from 'lodash';
 
-class PokemonLink extends Component {
-  onClick() {
-    this.props.selectForBattle(this.props.id);
+class SelectPokemonView extends Component {
+
+  renderPokemon() {
+    return map(this.props.pokemon, p => {
+      return (
+        <PokemonLink
+           name={p.name}
+           id={p.url}
+           key={p.url}
+           selected={this.props.selectForBattle}
+        />);
+    });
+  }
+
+  renderSelectedForBattle() {
+    return map(this.props.selectedForBattle, p => {
+      return (
+        <PokemonLink
+           name={p.name}
+           id={p.url}
+           key={p.url}
+           />);
+    });
   }
 
   render() {
     return (
       <div>
-        <a onClick={this.onClick.bind(this)}>{this.props.name}</a>
+        <div>
+          {this.renderPokemon()}
+        </div>
+        <hr />
+        <div>
+          {this.renderSelectedForBattle()}
+        </div>
+      </div>
+    );
+  }
+}
+
+class PokemonLink extends Component {
+  onClick() {
+    console.log(this.props.id);
+    this.props.selected(this.props.id);
+  }
+
+  render() {
+    return (
+      <div>
+        <a href='javascript:;' onClick={this.onClick.bind(this)}>{this.props.name}</a>
       </div>
     );
   }
@@ -30,35 +71,27 @@ class PokemonBattleContainer extends Component {
       url: '/pokemon',
       method: 'get',
       success: bind((r) => {
-        this.setState({ pokemon: r });
+        this.setState({ pokemon: sortBy(r, ["name"])});
       }, this)
     });
   }
 
   selectForBattle(id) {
+    let selected = find(this.state.pokemon, { url: id });
     this.setState({
-      selectForBattle: this.state.selectedForBattle.concat(id)
-    });
-  }
-
-  renderPokemon() {
-    return map(this.state.pokemon, p => {
-      return (
-        <PokemonLink
-           name={p.name}
-           id={p.url}
-           selectForBattle={this.selectForBattle.bind(this)}
-        />);
+      selectedForBattle: this.state.selectedForBattle.concat(selected)
     });
   }
 
   render() {
     return (
-      <div>
-        {this.renderPokemon()}
-      </div>
+      <SelectPokemonView
+         pokemon={this.state.pokemon}
+         selectForBattle={this.selectForBattle.bind(this)}
+         selectedForBattle={this.state.selectedForBattle} />
     );
   }
+
 }
 
 function initApp() {

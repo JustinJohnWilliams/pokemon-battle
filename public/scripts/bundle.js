@@ -78,8 +78,66 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var PokemonLink = function (_Component) {
-	  _inherits(PokemonLink, _Component);
+	var SelectPokemonView = function (_Component) {
+	  _inherits(SelectPokemonView, _Component);
+	
+	  function SelectPokemonView() {
+	    _classCallCheck(this, SelectPokemonView);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SelectPokemonView).apply(this, arguments));
+	  }
+	
+	  _createClass(SelectPokemonView, [{
+	    key: 'renderPokemon',
+	    value: function renderPokemon() {
+	      var _this2 = this;
+	
+	      return (0, _lodash.map)(this.props.pokemon, function (p) {
+	        return React.createElement(PokemonLink, {
+	          name: p.name,
+	          id: p.url,
+	          key: p.url,
+	          selected: _this2.props.selectForBattle
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'renderSelectedForBattle',
+	    value: function renderSelectedForBattle() {
+	      return (0, _lodash.map)(this.props.selectedForBattle, function (p) {
+	        return React.createElement(PokemonLink, {
+	          name: p.name,
+	          id: p.url,
+	          key: p.url
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'div',
+	          null,
+	          this.renderPokemon()
+	        ),
+	        React.createElement('hr', null),
+	        React.createElement(
+	          'div',
+	          null,
+	          this.renderSelectedForBattle()
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return SelectPokemonView;
+	}(_react.Component);
+	
+	var PokemonLink = function (_Component2) {
+	  _inherits(PokemonLink, _Component2);
 	
 	  function PokemonLink() {
 	    _classCallCheck(this, PokemonLink);
@@ -90,7 +148,8 @@
 	  _createClass(PokemonLink, [{
 	    key: 'onClick',
 	    value: function onClick() {
-	      this.props.selectForBattle(this.props.id);
+	      console.log(this.props.id);
+	      this.props.selected(this.props.id);
 	    }
 	  }, {
 	    key: 'render',
@@ -100,7 +159,7 @@
 	        null,
 	        React.createElement(
 	          'a',
-	          { onClick: this.onClick.bind(this) },
+	          { href: 'javascript:;', onClick: this.onClick.bind(this) },
 	          this.props.name
 	        )
 	      );
@@ -110,62 +169,49 @@
 	  return PokemonLink;
 	}(_react.Component);
 	
-	var PokemonBattleContainer = function (_Component2) {
-	  _inherits(PokemonBattleContainer, _Component2);
+	var PokemonBattleContainer = function (_Component3) {
+	  _inherits(PokemonBattleContainer, _Component3);
 	
 	  function PokemonBattleContainer() {
 	    _classCallCheck(this, PokemonBattleContainer);
 	
-	    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(PokemonBattleContainer).call(this));
+	    var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(PokemonBattleContainer).call(this));
 	
-	    _this2.state = {
+	    _this4.state = {
 	      pokemon: [],
 	      selectedForBattle: []
 	    };
-	    return _this2;
+	    return _this4;
 	  }
 	
 	  _createClass(PokemonBattleContainer, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this3 = this;
+	      var _this5 = this;
 	
 	      (0, _reqwest2.default)({
 	        url: '/pokemon',
 	        method: 'get',
 	        success: (0, _lodash.bind)(function (r) {
-	          _this3.setState({ pokemon: r });
+	          _this5.setState({ pokemon: (0, _lodash.sortBy)(r, ["name"]) });
 	        }, this)
 	      });
 	    }
 	  }, {
 	    key: 'selectForBattle',
 	    value: function selectForBattle(id) {
+	      var selected = (0, _lodash.find)(this.state.pokemon, { url: id });
 	      this.setState({
-	        selectForBattle: this.state.selectedForBattle.concat(id)
-	      });
-	    }
-	  }, {
-	    key: 'renderPokemon',
-	    value: function renderPokemon() {
-	      var _this4 = this;
-	
-	      return (0, _lodash.map)(this.state.pokemon, function (p) {
-	        return React.createElement(PokemonLink, {
-	          name: p.name,
-	          id: p.url,
-	          selectForBattle: _this4.selectForBattle.bind(_this4)
-	        });
+	        selectedForBattle: this.state.selectedForBattle.concat(selected)
 	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return React.createElement(
-	        'div',
-	        null,
-	        this.renderPokemon()
-	      );
+	      return React.createElement(SelectPokemonView, {
+	        pokemon: this.state.pokemon,
+	        selectForBattle: this.selectForBattle.bind(this),
+	        selectedForBattle: this.state.selectedForBattle });
 	    }
 	  }]);
 	
