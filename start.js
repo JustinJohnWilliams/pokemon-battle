@@ -2,4 +2,4 @@ require('babel-register')({
   ignore: /(node_modules|dictionary\.js)/
 });
 
-require('./server.js');
+require('./server/index.js');
