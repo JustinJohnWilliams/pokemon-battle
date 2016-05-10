@@ -118,7 +118,10 @@
 	
 	    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(PokemonBattleContainer).call(this));
 	
-	    _this2.state = { pokemon: [], selectedForBattle: [] };
+	    _this2.state = {
+	      pokemon: [],
+	      selectedForBattle: []
+	    };
 	    return _this2;
 	  }
 	
@@ -131,7 +134,6 @@
 	        url: '/pokemon',
 	        method: 'get',
 	        success: (0, _lodash.bind)(function (r) {
-	          console.log(r);
 	          _this3.setState({ pokemon: r });
 	        }, this)
 	      });
@@ -139,7 +141,9 @@
 	  }, {
 	    key: 'selectForBattle',
 	    value: function selectForBattle(id) {
-	      this.setState({ selectForBattle: this.state.selectedForBattle.concat(id) });
+	      this.setState({
+	        selectForBattle: this.state.selectedForBattle.concat(id)
+	      });
 	    }
 	  }, {
 	    key: 'renderPokemon',
@@ -157,7 +161,6 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log(this.state);
 	      return React.createElement(
 	        'div',
 	        null,
