@@ -136,8 +136,35 @@
 	  return SelectPokemonView;
 	}(_react.Component);
 	
-	var PokemonLink = function (_Component2) {
-	  _inherits(PokemonLink, _Component2);
+	var InitGameView = function (_Component2) {
+	  _inherits(InitGameView, _Component2);
+	
+	  function InitGameView() {
+	    _classCallCheck(this, InitGameView);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(InitGameView).apply(this, arguments));
+	  }
+	
+	  _createClass(InitGameView, [{
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'a',
+	          { href: 'javascript:alert("joined game!");' },
+	          'Join Game'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return InitGameView;
+	}(_react.Component);
+	
+	var PokemonLink = function (_Component3) {
+	  _inherits(PokemonLink, _Component3);
 	
 	  function PokemonLink() {
 	    _classCallCheck(this, PokemonLink);
@@ -169,31 +196,33 @@
 	  return PokemonLink;
 	}(_react.Component);
 	
-	var PokemonBattleContainer = function (_Component3) {
-	  _inherits(PokemonBattleContainer, _Component3);
+	var PokemonBattleContainer = function (_Component4) {
+	  _inherits(PokemonBattleContainer, _Component4);
 	
 	  function PokemonBattleContainer() {
 	    _classCallCheck(this, PokemonBattleContainer);
 	
-	    var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(PokemonBattleContainer).call(this));
+	    var _this5 = _possibleConstructorReturn(this, Object.getPrototypeOf(PokemonBattleContainer).call(this));
 	
-	    _this4.state = {
+	    _this5.state = {
 	      pokemon: [],
-	      selectedForBattle: []
+	      selectedForBattle: [],
+	      playerId: null,
+	      game: {}
 	    };
-	    return _this4;
+	    return _this5;
 	  }
 	
 	  _createClass(PokemonBattleContainer, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this5 = this;
+	      var _this6 = this;
 	
 	      (0, _reqwest2.default)({
 	        url: '/pokemon',
 	        method: 'get',
 	        success: (0, _lodash.bind)(function (r) {
-	          _this5.setState({ pokemon: (0, _lodash.sortBy)(r, ["name"]) });
+	          _this6.setState({ pokemon: (0, _lodash.sortBy)(r, ["name"]) });
 	        }, this)
 	      });
 	    }
@@ -206,8 +235,12 @@
 	      });
 	    }
 	  }, {
+	    key: 'joinGame',
+	    value: function joinGame() {}
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      if (this.state.playerId == null) return React.createElement(InitGameView, { joinGame: this.joinGame.bind(this) });
 	      return React.createElement(SelectPokemonView, {
 	        pokemon: this.state.pokemon,
 	        selectForBattle: this.selectForBattle.bind(this),

@@ -42,6 +42,16 @@ class SelectPokemonView extends Component {
   }
 }
 
+class InitGameView extends Component {
+  render() {
+    return (
+      <div>
+        <a href='javascript:alert("joined game!");'>Join Game</a>
+      </div>
+    );
+  }
+}
+
 class PokemonLink extends Component {
   onClick() {
     console.log(this.props.id);
@@ -62,7 +72,9 @@ class PokemonBattleContainer extends Component {
     super();
     this.state = {
       pokemon: [ ],
-      selectedForBattle: []
+      selectedForBattle: [ ],
+      playerId: null,
+      game: { }
     };
   }
 
@@ -83,7 +95,12 @@ class PokemonBattleContainer extends Component {
     });
   }
 
+  joinGame() {
+
+  }
+
   render() {
+    if(this.state.playerId == null) return (<InitGameView joinGame={this.joinGame.bind(this)} />);
     return (
       <SelectPokemonView
          pokemon={this.state.pokemon}

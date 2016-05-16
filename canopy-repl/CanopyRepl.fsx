@@ -65,7 +65,24 @@ let names _ =
         })
       """) :?> ReadOnlyCollection<System.Object> |> List.ofSeq
 
-openBrowser()
+let switchTo b = browser <- b
+let index = "http://localhost:3000/"
 
-url "http://localhost:4000"
+openBrowser()
+let player1 = browser
+openBrowser()
+let player2 = browser
+
+tile [player1; player2]
+
+switchTo player1
+url index
+click "Join Game"
+switchTo player2
+url index
+
+
+
+
+
 reload()

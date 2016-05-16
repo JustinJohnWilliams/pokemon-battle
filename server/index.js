@@ -23,11 +23,15 @@ app.get('/pokemon', function (req, res) {
 app.post('/join', function (req, res) {
   let success = joinGame(game);
   if(success) {
-    res.json({foo: 'bar'});
+    res.json(game);
   } else {
     res.status(400);
     res.send('no dice for you');
   }
+});
+
+app.get('/game', (req, res) => {
+  res.json(game);
 });
 
 app.listen(process.env.PORT || 3000);
