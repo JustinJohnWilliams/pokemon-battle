@@ -8,7 +8,8 @@ import { joinGame,
 import assert from 'assert';
 
 describe('gotta catch them all', () => {
-	xit('retrieving pokemon', () => {
+
+	it('retrieving pokemon', () => {
     return equal(
       getIn(getPokemon(), r => r.length),
       151,
