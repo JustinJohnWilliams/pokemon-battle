@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { SelectPokemonView } from './select-pokemon-view.jsx';
+import { take } from 'lodash';
 
 export class SandboxContainer extends Component {
   render() {
@@ -30,6 +31,11 @@ export class SandboxContainer extends Component {
       { name: 'flareon', url: 'flareon' }
     ];
 
-    return (<SelectPokemonView pokemon={pokemon} />);
+    return (
+      <SelectPokemonView
+        pokemon={pokemon}
+        selectedForBattle={take(pokemon, 5)}
+        playerId={1}
+      />);
   }
 }

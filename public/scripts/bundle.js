@@ -46,7 +46,7 @@
 
 	'use strict';
 	
-	var _app = __webpack_require__(43);
+	var _app = __webpack_require__(40);
 	
 	var _app2 = _interopRequireDefault(_app);
 	
@@ -76,9 +76,9 @@
 	
 	var _reqwest2 = _interopRequireDefault(_reqwest);
 	
-	var _selectPokemonView = __webpack_require__(40);
+	var _selectPokemonView = __webpack_require__(42);
 	
-	var _initGameView = __webpack_require__(42);
+	var _initGameView = __webpack_require__(44);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -13549,7 +13549,31 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, {}))
 
 /***/ },
-/* 39 */
+/* 39 */,
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _sandboxContainer = __webpack_require__(41);
+	
+	var _pokemonBattleContainer = __webpack_require__(1);
+	
+	function initSandboxApp() {
+	  ReactDOM.render(React.createElement(_sandboxContainer.SandboxContainer, null), document.getElementById('content'));
+	}
+	
+	module.exports.initApp = initApp;
+	
+	function initApp() {
+	  ReactDOM.render(React.createElement(_pokemonBattleContainer.PokemonBattleContainer, null), document.getElementById('content'));
+	}
+	
+	module.exports.initApp = initApp;
+	module.exports.initSandboxApp = initSandboxApp;
+
+/***/ },
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13563,7 +13587,9 @@
 	
 	var _react = __webpack_require__(2);
 	
-	var _selectPokemonView = __webpack_require__(40);
+	var _selectPokemonView = __webpack_require__(42);
+	
+	var _lodash = __webpack_require__(36);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -13585,7 +13611,11 @@
 	    value: function render() {
 	      var pokemon = [{ name: 'pikachu', url: 'pikachu' }, { name: 'ditto', url: 'ditto' }, { name: 'clefairy', url: 'clefairy' }, { name: 'cloyster', url: 'cloyster' }, { name: 'cubone', url: 'cubone' }, { name: 'dewgong', url: 'dewgong' }, { name: 'diglett', url: 'diglett' }, { name: 'ditto', url: 'ditto' }, { name: 'dodrio', url: 'dodrio' }, { name: 'doduo', url: 'doduo' }, { name: 'dragonair', url: 'dragonair' }, { name: 'dragonite', url: 'dragonite' }, { name: 'dratini', url: 'dratini' }, { name: 'drowzee', url: 'drowzee' }, { name: 'dugtrio', url: 'dugtrio' }, { name: 'eevee', url: 'eevee' }, { name: 'ekans', url: 'ekans' }, { name: 'electabuzz', url: 'electabuzz' }, { name: 'electrode', url: 'electrode' }, { name: 'exeggcute', url: 'exeggcute' }, { name: 'exeggutor', url: 'exeggutor' }, { name: 'farfetchd', url: 'farfetchd' }, { name: 'fearow', url: 'fearow' }, { name: 'flareon', url: 'flareon' }];
 	
-	      return React.createElement(_selectPokemonView.SelectPokemonView, { pokemon: pokemon });
+	      return React.createElement(_selectPokemonView.SelectPokemonView, {
+	        pokemon: pokemon,
+	        selectedForBattle: (0, _lodash.take)(pokemon, 5),
+	        playerId: 1
+	      });
 	    }
 	  }]);
 
@@ -13593,7 +13623,7 @@
 	}(_react.Component);
 
 /***/ },
-/* 40 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13609,7 +13639,7 @@
 	
 	var _react = __webpack_require__(2);
 	
-	var _pokemonLink = __webpack_require__(41);
+	var _pokemonLink = __webpack_require__(43);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -13627,6 +13657,11 @@
 	  }
 	
 	  _createClass(SelectPokemonView, [{
+	    key: 'border',
+	    value: function border() {
+	      return { border: 'solid 1px silver', clear: 'both', margin: '10px', padding: '10px' };
+	    }
+	  }, {
 	    key: 'renderPokemon',
 	    value: function renderPokemon() {
 	      var _this2 = this;
@@ -13648,11 +13683,15 @@
 	    key: 'renderSelectedForBattle',
 	    value: function renderSelectedForBattle() {
 	      return (0, _lodash.map)(this.props.selectedForBattle, function (p) {
-	        return React.createElement(_pokemonLink.PokemonLink, {
-	          name: p.name,
-	          id: p.url,
-	          key: p.url
-	        });
+	        return React.createElement(
+	          'div',
+	          { className: 'col-md-2 col-sm-2 col-xs-2' },
+	          React.createElement(_pokemonLink.PokemonLink, {
+	            name: p.name,
+	            id: p.url,
+	            key: p.url
+	          })
+	        );
 	      });
 	    }
 	  }, {
@@ -13662,16 +13701,31 @@
 	        'div',
 	        null,
 	        React.createElement(
+	          'h1',
+	          { className: 'col-md-12' },
+	          'Select your pokemon, Player ',
+	          this.props.playerId,
+	          '! '
+	        ),
+	        React.createElement('hr', null),
+	        React.createElement(
 	          'div',
-	          { style: { border: 'solid 1px silver', clear: 'both', margin: '10px', padding: '10px' } },
+	          { style: this.border() },
 	          this.renderPokemon(),
 	          ' '
 	        ),
 	        React.createElement('hr', null),
 	        React.createElement(
+	          'h1',
+	          { className: 'col-md-12' },
+	          'Selected pokemon!!'
+	        ),
+	        React.createElement('hr', null),
+	        React.createElement(
 	          'div',
-	          null,
-	          this.renderSelectedForBattle()
+	          { style: this.border() },
+	          this.renderSelectedForBattle(),
+	          ' '
 	        )
 	      );
 	    }
@@ -13681,7 +13735,8 @@
 	      return {
 	        pokemon: _react.PropTypes.object.isRequired,
 	        selectForBattle: _react.PropTypes.func.isRequired,
-	        selectedForBattle: _react.PropTypes.array.isRequired
+	        selectedForBattle: _react.PropTypes.array.isRequired,
+	        playerId: _react.PropTypes.int.isRequired
 	      };
 	    }
 	  }]);
@@ -13690,7 +13745,7 @@
 	}(_react.Component);
 
 /***/ },
-/* 41 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13749,7 +13804,7 @@
 	}(_react.Component);
 
 /***/ },
-/* 42 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13807,29 +13862,6 @@
 
 	  return InitGameView;
 	}(_react.Component);
-
-/***/ },
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _sandboxContainer = __webpack_require__(39);
-	
-	var _pokemonBattleContainer = __webpack_require__(1);
-	
-	function initSandboxApp() {
-	  ReactDOM.render(React.createElement(_sandboxContainer.SandboxContainer, null), document.getElementById('content'));
-	}
-	
-	module.exports.initApp = initApp;
-	
-	function initApp() {
-	  ReactDOM.render(React.createElement(_pokemonBattleContainer.PokemonBattleContainer, null), document.getElementById('content'));
-	}
-	
-	module.exports.initApp = initApp;
-	module.exports.initSandboxApp = initSandboxApp;
 
 /***/ }
 /******/ ]);

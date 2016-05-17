@@ -7,8 +7,13 @@ export class SelectPokemonView extends Component {
     return {
       pokemon: PropTypes.object.isRequired,
       selectForBattle: PropTypes.func.isRequired,
-      selectedForBattle: PropTypes.array.isRequired
+      selectedForBattle: PropTypes.array.isRequired,
+      playerId: PropTypes.int.isRequired
     };
+  }
+
+  border() {
+    return { border: 'solid 1px silver', clear: 'both', margin: '10px', padding: '10px' };
   }
 
   renderPokemon() {
@@ -29,24 +34,33 @@ export class SelectPokemonView extends Component {
   renderSelectedForBattle() {
     return map(this.props.selectedForBattle, p => {
       return (
-        <PokemonLink
-          name={p.name}
-          id={p.url}
-          key={p.url}
-        />);
+        <div className="col-md-2 col-sm-2 col-xs-2">
+          <PokemonLink
+            name={p.name}
+            id={p.url}
+            key={p.url}
+          />
+        </div>
+      );
     });
   }
+
 
   render() {
     return (
       <div>
-        <div style={{ border: 'solid 1px silver', clear: 'both', margin: '10px', padding: '10px' }}>
+        <h1 className="col-md-12">Select your pokemon, Player {this.props.playerId}! </h1>
+        <hr />
+        <div style={this.border()}>
           {this.renderPokemon()}
           &nbsp;
         </div>
         <hr />
-        <div>
+        <h1 className="col-md-12">Selected pokemon!!</h1>
+        <hr />
+        <div style={this.border()}>
           {this.renderSelectedForBattle()}
+          &nbsp;
         </div>
       </div>
     );
