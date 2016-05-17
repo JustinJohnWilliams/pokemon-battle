@@ -1,99 +1,10 @@
-import { Component, PropTypes } from 'react';
+import { Component } from 'react';
+import { bind, find, sortBy } from 'lodash';
 import req from 'reqwest';
-import { bind, map, find, sortBy } from 'lodash';
+import { SelectPokemonView } from './select-pokemon-view.jsx';
+import { InitGameView } from './init-game-view.jsx';
 
-class SelectPokemonView extends Component {
-  static propTypes() {
-    return {
-      pokemon: PropTypes.object.isRequired,
-      name: PropTypes.string.isRequired,
-      selectForBattle: PropTypes.func.isRequired,
-      selectedForBattle: PropTypes.array.isRequired
-    };
-  }
-
-  renderPokemon() {
-    return map(this.props.pokemon, p => {
-      return (
-        <PokemonLink
-          name={p.name}
-          id={p.url}
-          key={p.url}
-          selected={this.props.selectForBattle}
-        />);
-    });
-  }
-
-  renderSelectedForBattle() {
-    return map(this.props.selectedForBattle, p => {
-      return (
-        <PokemonLink
-          name={p.name}
-          id={p.url}
-          key={p.url}
-        />);
-    });
-  }
-
-  render() {
-    return (
-      <div>
-        <div>
-          {this.renderPokemon()}
-        </div>
-        <hr />
-        <div>
-          {this.renderSelectedForBattle()}
-        </div>
-      </div>
-    );
-  }
-}
-
-class InitGameView extends Component {
-  static propTypes() {
-    return {
-      joinGame: PropTypes.func.isRequired
-    };
-  }
-
-  joinGame() {
-    this.props.joinGame();
-  }
-
-  render() {
-    return (
-      <div>
-        <a href='javascript:;' onClick={this.joinGame.bind(this)}>Join Game</a>
-      </div>
-    );
-  }
-}
-
-class PokemonLink extends Component {
-  static propTypes() {
-    return {
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      selected: PropTypes.func.isRequired
-    };
-  }
-
-  onClick() {
-    console.log(this.props.id);
-    this.props.selected(this.props.id);
-  }
-
-  render() {
-    return (
-      <div>
-        <a href='javascript:;' onClick={this.onClick.bind(this)}>{this.props.name}</a>
-      </div>
-    );
-  }
-}
-
-class PokemonBattleContainer extends Component {
+export class PokemonBattleContainer extends Component {
   constructor() {
     super();
     this.state = {
@@ -142,6 +53,7 @@ class PokemonBattleContainer extends Component {
 
     return (
       <SelectPokemonView
+        playerId={this.state.playerId}
         pokemon={this.state.pokemon}
         selectForBattle={this.selectForBattle.bind(this)}
         selectedForBattle={this.state.selectedForBattle}
@@ -149,12 +61,3 @@ class PokemonBattleContainer extends Component {
     );
   }
 }
-
-function initApp() {
-  ReactDOM.render(
-    <PokemonBattleContainer />,
-    document.getElementById('content')
-  );
-}
-
-module.exports.initApp = initApp;

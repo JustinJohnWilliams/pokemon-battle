@@ -80,6 +80,7 @@ let player2 = browser
 
 tile [player1; player2]
 
+resetGame ()
 switchTo player1
 url index
 click "Join Game"
@@ -87,8 +88,8 @@ switchTo player2
 url index
 click "Join Game"
 url "http://localhost:3000/game"
+resetGame ()
 
 reload()
 
-
-resetGame ()
+url "http://localhost:3000/sandbox"

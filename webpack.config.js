@@ -1,4 +1,4 @@
-var webpack = require('webpack');
+const webpack = require('webpack');
 
 module.exports = {
   entry: './client/app.js',
@@ -12,16 +12,16 @@ module.exports = {
         test: /\.jsx$/,
         loader: 'babel-loader',
         exclude: 'node_modules',
-        query: { presets: ['es2015', 'react'] },
+        query: { presets: ['es2015', 'react'] }
       },
       {
         loader: 'babel-loader',
         test: /\.js$/,
-        query: { presets: 'es2015' },
+        query: { presets: 'es2015' }
       }
     ]
   },
-  plugins: [ new webpack.NoErrorsPlugin() ],
+  plugins: [new webpack.NoErrorsPlugin()],
   stats: { colors: true },
-  devtool: 'source-map',
+  devtool: 'source-map'
 };

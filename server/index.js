@@ -16,6 +16,10 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
+app.get('/sandbox', function (req, res) {
+  res.sendFile(path.join(__dirname, '../public/sandbox.html'));
+});
+
 app.get('/pokemon', function (req, res) {
   getPokemon().then(r => res.json(r));
 });

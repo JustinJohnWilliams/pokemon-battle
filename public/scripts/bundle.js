@@ -46,13 +46,14 @@
 
 	'use strict';
 	
-	var _pokemonBattleContainer = __webpack_require__(1);
+	var _app = __webpack_require__(43);
 	
-	var _pokemonBattleContainer2 = _interopRequireDefault(_pokemonBattleContainer);
+	var _app2 = _interopRequireDefault(_app);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	_pokemonBattleContainer2.default.initApp();
+	window.initApp = _app2.default.initApp;
+	window.initSandoxApp = _app2.default.initSandboxApp;
 
 /***/ },
 /* 1 */
@@ -60,15 +61,24 @@
 
 	'use strict';
 	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.PokemonBattleContainer = undefined;
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(2);
+	
+	var _lodash = __webpack_require__(36);
 	
 	var _reqwest = __webpack_require__(34);
 	
 	var _reqwest2 = _interopRequireDefault(_reqwest);
 	
-	var _lodash = __webpack_require__(36);
+	var _selectPokemonView = __webpack_require__(40);
+	
+	var _initGameView = __webpack_require__(42);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -78,170 +88,21 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var SelectPokemonView = function (_Component) {
-	  _inherits(SelectPokemonView, _Component);
-	
-	  function SelectPokemonView() {
-	    _classCallCheck(this, SelectPokemonView);
-	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SelectPokemonView).apply(this, arguments));
-	  }
-	
-	  _createClass(SelectPokemonView, [{
-	    key: 'renderPokemon',
-	    value: function renderPokemon() {
-	      var _this2 = this;
-	
-	      return (0, _lodash.map)(this.props.pokemon, function (p) {
-	        return React.createElement(PokemonLink, {
-	          name: p.name,
-	          id: p.url,
-	          key: p.url,
-	          selected: _this2.props.selectForBattle
-	        });
-	      });
-	    }
-	  }, {
-	    key: 'renderSelectedForBattle',
-	    value: function renderSelectedForBattle() {
-	      return (0, _lodash.map)(this.props.selectedForBattle, function (p) {
-	        return React.createElement(PokemonLink, {
-	          name: p.name,
-	          id: p.url,
-	          key: p.url
-	        });
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	          'div',
-	          null,
-	          this.renderPokemon()
-	        ),
-	        React.createElement('hr', null),
-	        React.createElement(
-	          'div',
-	          null,
-	          this.renderSelectedForBattle()
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: function propTypes() {
-	      return {
-	        pokemon: _react.PropTypes.object.isRequired,
-	        name: _react.PropTypes.string.isRequired,
-	        selectForBattle: _react.PropTypes.func.isRequired,
-	        selectedForBattle: _react.PropTypes.array.isRequired
-	      };
-	    }
-	  }]);
-	
-	  return SelectPokemonView;
-	}(_react.Component);
-	
-	var InitGameView = function (_Component2) {
-	  _inherits(InitGameView, _Component2);
-	
-	  function InitGameView() {
-	    _classCallCheck(this, InitGameView);
-	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(InitGameView).apply(this, arguments));
-	  }
-	
-	  _createClass(InitGameView, [{
-	    key: 'joinGame',
-	    value: function joinGame() {
-	      this.props.joinGame();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	          'a',
-	          { href: 'javascript:;', onClick: this.joinGame.bind(this) },
-	          'Join Game'
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: function propTypes() {
-	      return {
-	        joinGame: _react.PropTypes.func.isRequired
-	      };
-	    }
-	  }]);
-	
-	  return InitGameView;
-	}(_react.Component);
-	
-	var PokemonLink = function (_Component3) {
-	  _inherits(PokemonLink, _Component3);
-	
-	  function PokemonLink() {
-	    _classCallCheck(this, PokemonLink);
-	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(PokemonLink).apply(this, arguments));
-	  }
-	
-	  _createClass(PokemonLink, [{
-	    key: 'onClick',
-	    value: function onClick() {
-	      console.log(this.props.id);
-	      this.props.selected(this.props.id);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	          'a',
-	          { href: 'javascript:;', onClick: this.onClick.bind(this) },
-	          this.props.name
-	        )
-	      );
-	    }
-	  }], [{
-	    key: 'propTypes',
-	    value: function propTypes() {
-	      return {
-	        id: _react.PropTypes.string.isRequired,
-	        name: _react.PropTypes.string.isRequired,
-	        selected: _react.PropTypes.func.isRequired
-	      };
-	    }
-	  }]);
-	
-	  return PokemonLink;
-	}(_react.Component);
-	
-	var PokemonBattleContainer = function (_Component4) {
-	  _inherits(PokemonBattleContainer, _Component4);
+	var PokemonBattleContainer = exports.PokemonBattleContainer = function (_Component) {
+	  _inherits(PokemonBattleContainer, _Component);
 	
 	  function PokemonBattleContainer() {
 	    _classCallCheck(this, PokemonBattleContainer);
 	
-	    var _this5 = _possibleConstructorReturn(this, Object.getPrototypeOf(PokemonBattleContainer).call(this));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PokemonBattleContainer).call(this));
 	
-	    _this5.state = {
+	    _this.state = {
 	      pokemon: [],
 	      selectedForBattle: [],
 	      playerId: null,
 	      game: {}
 	    };
-	    return _this5;
+	    return _this;
 	  }
 	
 	  _createClass(PokemonBattleContainer, [{
@@ -252,13 +113,13 @@
 	  }, {
 	    key: 'getPokemon',
 	    value: function getPokemon() {
-	      var _this6 = this;
+	      var _this2 = this;
 	
 	      (0, _reqwest2.default)({
 	        url: '/pokemon',
 	        method: 'get',
 	        success: (0, _lodash.bind)(function (r) {
-	          _this6.setState({ pokemon: (0, _lodash.sortBy)(r, ['name']) });
+	          _this2.setState({ pokemon: (0, _lodash.sortBy)(r, ['name']) });
 	        }, this)
 	      });
 	    }
@@ -287,24 +148,19 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      if (this.state.playerId == null) return React.createElement(InitGameView, { joinGame: this.joinGame.bind(this) });
+	      if (this.state.playerId == null) return React.createElement(_initGameView.InitGameView, { joinGame: this.joinGame.bind(this) });
 	
-	      return React.createElement(SelectPokemonView, {
+	      return React.createElement(_selectPokemonView.SelectPokemonView, {
+	        playerId: this.state.playerId,
 	        pokemon: this.state.pokemon,
 	        selectForBattle: this.selectForBattle.bind(this),
 	        selectedForBattle: this.state.selectedForBattle
 	      });
 	    }
 	  }]);
-	
+
 	  return PokemonBattleContainer;
 	}(_react.Component);
-	
-	function initApp() {
-	  ReactDOM.render(React.createElement(PokemonBattleContainer, null), document.getElementById('content'));
-	}
-	
-	module.exports.initApp = initApp;
 
 /***/ },
 /* 2 */
@@ -13691,6 +13547,289 @@
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, {}))
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.SandboxContainer = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(2);
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var SandboxContainer = exports.SandboxContainer = function (_Component) {
+	  _inherits(SandboxContainer, _Component);
+	
+	  function SandboxContainer() {
+	    _classCallCheck(this, SandboxContainer);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SandboxContainer).apply(this, arguments));
+	  }
+	
+	  _createClass(SandboxContainer, [{
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        null,
+	        'hello world'
+	      );
+	    }
+	  }]);
+
+	  return SandboxContainer;
+	}(_react.Component);
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.SelectPokemonView = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _lodash = __webpack_require__(36);
+	
+	var _react = __webpack_require__(2);
+	
+	var _pokemonLink = __webpack_require__(41);
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var SelectPokemonView = exports.SelectPokemonView = function (_Component) {
+	  _inherits(SelectPokemonView, _Component);
+	
+	  function SelectPokemonView() {
+	    _classCallCheck(this, SelectPokemonView);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SelectPokemonView).apply(this, arguments));
+	  }
+	
+	  _createClass(SelectPokemonView, [{
+	    key: 'renderPokemon',
+	    value: function renderPokemon() {
+	      var _this2 = this;
+	
+	      return (0, _lodash.map)(this.props.pokemon, function (p) {
+	        return React.createElement(_pokemonLink.PokemonLink, {
+	          name: p.name,
+	          id: p.url,
+	          key: p.url,
+	          selected: _this2.props.selectForBattle
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'renderSelectedForBattle',
+	    value: function renderSelectedForBattle() {
+	      return (0, _lodash.map)(this.props.selectedForBattle, function (p) {
+	        return React.createElement(_pokemonLink.PokemonLink, {
+	          name: p.name,
+	          id: p.url,
+	          key: p.url
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'div',
+	          null,
+	          this.renderPokemon()
+	        ),
+	        React.createElement('hr', null),
+	        React.createElement(
+	          'div',
+	          null,
+	          this.renderSelectedForBattle()
+	        )
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: function propTypes() {
+	      return {
+	        pokemon: _react.PropTypes.object.isRequired,
+	        name: _react.PropTypes.string.isRequired,
+	        selectForBattle: _react.PropTypes.func.isRequired,
+	        selectedForBattle: _react.PropTypes.array.isRequired
+	      };
+	    }
+	  }]);
+
+	  return SelectPokemonView;
+	}(_react.Component);
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.PokemonLink = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(2);
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var PokemonLink = exports.PokemonLink = function (_Component) {
+	  _inherits(PokemonLink, _Component);
+	
+	  function PokemonLink() {
+	    _classCallCheck(this, PokemonLink);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(PokemonLink).apply(this, arguments));
+	  }
+	
+	  _createClass(PokemonLink, [{
+	    key: 'onClick',
+	    value: function onClick() {
+	      console.log(this.props.id);
+	      this.props.selected(this.props.id);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'a',
+	          { href: 'javascript:;', onClick: this.onClick.bind(this) },
+	          this.props.name
+	        )
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: function propTypes() {
+	      return {
+	        id: _react.PropTypes.string.isRequired,
+	        name: _react.PropTypes.string.isRequired,
+	        selected: _react.PropTypes.func.isRequired
+	      };
+	    }
+	  }]);
+
+	  return PokemonLink;
+	}(_react.Component);
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.InitGameView = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(2);
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var InitGameView = exports.InitGameView = function (_Component) {
+	  _inherits(InitGameView, _Component);
+	
+	  function InitGameView() {
+	    _classCallCheck(this, InitGameView);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(InitGameView).apply(this, arguments));
+	  }
+	
+	  _createClass(InitGameView, [{
+	    key: 'joinGame',
+	    value: function joinGame() {
+	      this.props.joinGame();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'a',
+	          { href: 'javascript:;', onClick: this.joinGame.bind(this) },
+	          'Join Game'
+	        )
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: function propTypes() {
+	      return {
+	        joinGame: _react.PropTypes.func.isRequired
+	      };
+	    }
+	  }]);
+
+	  return InitGameView;
+	}(_react.Component);
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _sandboxContainer = __webpack_require__(39);
+	
+	var _pokemonBattleContainer = __webpack_require__(1);
+	
+	function initSandboxApp() {
+	  ReactDOM.render(React.createElement(_sandboxContainer.SandboxContainer, null), document.getElementById('content'));
+	}
+	
+	module.exports.initApp = initApp;
+	
+	function initApp() {
+	  ReactDOM.render(React.createElement(_pokemonBattleContainer.PokemonBattleContainer, null), document.getElementById('content'));
+	}
+	
+	module.exports.initApp = initApp;
+	module.exports.initSandboxApp = initSandboxApp;
 
 /***/ }
 /******/ ]);

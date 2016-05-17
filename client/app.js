@@ -1,3 +1,4 @@
-import container from './pokemon-battle-container.jsx';
+import container from './app.jsx';
 
-container.initApp();
+window.initApp = container.initApp;
+window.initSandoxApp = container.initSandboxApp;
