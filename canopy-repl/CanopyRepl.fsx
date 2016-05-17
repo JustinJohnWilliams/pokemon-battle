@@ -68,6 +68,11 @@ let names _ =
 let switchTo b = browser <- b
 let index = "http://localhost:3000/"
 
+let resetGame _ =
+  url "http://localhost:3000/reset-game"
+  url index
+
+
 openBrowser()
 let player1 = browser
 openBrowser()
@@ -80,9 +85,10 @@ url index
 click "Join Game"
 switchTo player2
 url index
-
-
-
-
+click "Join Game"
+url "http://localhost:3000/game"
 
 reload()
+
+
+resetGame ()

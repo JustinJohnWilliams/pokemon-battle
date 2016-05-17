@@ -51,10 +51,20 @@ class SelectPokemonView extends Component {
 }
 
 class InitGameView extends Component {
+  static propTypes() {
+    return {
+      joinGame: PropTypes.func.isRequired
+    };
+  }
+
+  joinGame() {
+    this.props.joinGame();
+  }
+
   render() {
     return (
       <div>
-        <a href='javascript:alert("joined game!");'>Join Game</a>
+        <a href='javascript:;' onClick={this.joinGame.bind(this)}>Join Game</a>
       </div>
     );
   }
@@ -116,7 +126,15 @@ class PokemonBattleContainer extends Component {
   }
 
   joinGame() {
+    req({
+      url: '/join',
+      method: 'post',
+      success: this.assignPlayer.bind(this)
+    });
+  }
 
+  assignPlayer(r) {
+    this.setState({ playerId: r.playerId });
   }
 
   render() {

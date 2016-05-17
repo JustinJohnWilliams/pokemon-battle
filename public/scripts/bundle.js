@@ -131,6 +131,16 @@
 	        )
 	      );
 	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: function propTypes() {
+	      return {
+	        pokemon: _react.PropTypes.object.isRequired,
+	        name: _react.PropTypes.string.isRequired,
+	        selectForBattle: _react.PropTypes.func.isRequired,
+	        selectedForBattle: _react.PropTypes.array.isRequired
+	      };
+	    }
 	  }]);
 	
 	  return SelectPokemonView;
@@ -146,6 +156,11 @@
 	  }
 	
 	  _createClass(InitGameView, [{
+	    key: 'joinGame',
+	    value: function joinGame() {
+	      this.props.joinGame();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return React.createElement(
@@ -153,10 +168,17 @@
 	        null,
 	        React.createElement(
 	          'a',
-	          { href: 'javascript:alert("joined game!");' },
+	          { href: 'javascript:;', onClick: this.joinGame.bind(this) },
 	          'Join Game'
 	        )
 	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: function propTypes() {
+	      return {
+	        joinGame: _react.PropTypes.func.isRequired
+	      };
 	    }
 	  }]);
 	
@@ -191,6 +213,15 @@
 	        )
 	      );
 	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: function propTypes() {
+	      return {
+	        id: _react.PropTypes.string.isRequired,
+	        name: _react.PropTypes.string.isRequired,
+	        selected: _react.PropTypes.func.isRequired
+	      };
+	    }
 	  }]);
 	
 	  return PokemonLink;
@@ -216,13 +247,18 @@
 	  _createClass(PokemonBattleContainer, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      this.getPokemon();
+	    }
+	  }, {
+	    key: 'getPokemon',
+	    value: function getPokemon() {
 	      var _this6 = this;
 	
 	      (0, _reqwest2.default)({
 	        url: '/pokemon',
 	        method: 'get',
 	        success: (0, _lodash.bind)(function (r) {
-	          _this6.setState({ pokemon: (0, _lodash.sortBy)(r, ["name"]) });
+	          _this6.setState({ pokemon: (0, _lodash.sortBy)(r, ['name']) });
 	        }, this)
 	      });
 	    }
@@ -236,15 +272,28 @@
 	    }
 	  }, {
 	    key: 'joinGame',
-	    value: function joinGame() {}
+	    value: function joinGame() {
+	      (0, _reqwest2.default)({
+	        url: '/join',
+	        method: 'post',
+	        success: this.assignPlayer.bind(this)
+	      });
+	    }
+	  }, {
+	    key: 'assignPlayer',
+	    value: function assignPlayer(r) {
+	      this.setState({ playerId: r.playerId });
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      if (this.state.playerId == null) return React.createElement(InitGameView, { joinGame: this.joinGame.bind(this) });
+	
 	      return React.createElement(SelectPokemonView, {
 	        pokemon: this.state.pokemon,
 	        selectForBattle: this.selectForBattle.bind(this),
-	        selectedForBattle: this.state.selectedForBattle });
+	        selectedForBattle: this.state.selectedForBattle
+	      });
 	    }
 	  }]);
 	
