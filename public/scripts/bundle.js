@@ -13563,6 +13563,8 @@
 	
 	var _react = __webpack_require__(2);
 	
+	var _selectPokemonView = __webpack_require__(40);
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -13581,11 +13583,9 @@
 	  _createClass(SandboxContainer, [{
 	    key: 'render',
 	    value: function render() {
-	      return React.createElement(
-	        'div',
-	        null,
-	        'hello world'
-	      );
+	      var pokemon = [{ name: 'pikachu', url: 'pikachu' }, { name: 'ditto', url: 'ditto' }, { name: 'clefairy', url: 'clefairy' }, { name: 'cloyster', url: 'cloyster' }, { name: 'cubone', url: 'cubone' }, { name: 'dewgong', url: 'dewgong' }, { name: 'diglett', url: 'diglett' }, { name: 'ditto', url: 'ditto' }, { name: 'dodrio', url: 'dodrio' }, { name: 'doduo', url: 'doduo' }, { name: 'dragonair', url: 'dragonair' }, { name: 'dragonite', url: 'dragonite' }, { name: 'dratini', url: 'dratini' }, { name: 'drowzee', url: 'drowzee' }, { name: 'dugtrio', url: 'dugtrio' }, { name: 'eevee', url: 'eevee' }, { name: 'ekans', url: 'ekans' }, { name: 'electabuzz', url: 'electabuzz' }, { name: 'electrode', url: 'electrode' }, { name: 'exeggcute', url: 'exeggcute' }, { name: 'exeggutor', url: 'exeggutor' }, { name: 'farfetchd', url: 'farfetchd' }, { name: 'fearow', url: 'fearow' }, { name: 'flareon', url: 'flareon' }];
+	
+	      return React.createElement(_selectPokemonView.SelectPokemonView, { pokemon: pokemon });
 	    }
 	  }]);
 
@@ -13632,12 +13632,16 @@
 	      var _this2 = this;
 	
 	      return (0, _lodash.map)(this.props.pokemon, function (p) {
-	        return React.createElement(_pokemonLink.PokemonLink, {
-	          name: p.name,
-	          id: p.url,
-	          key: p.url,
-	          selected: _this2.props.selectForBattle
-	        });
+	        return React.createElement(
+	          'div',
+	          { className: 'col-md-2 col-sm-2 col-xs-2' },
+	          React.createElement(_pokemonLink.PokemonLink, {
+	            name: p.name,
+	            id: p.url,
+	            key: p.url,
+	            selected: _this2.props.selectForBattle
+	          })
+	        );
 	      });
 	    }
 	  }, {
@@ -13659,8 +13663,9 @@
 	        null,
 	        React.createElement(
 	          'div',
-	          null,
-	          this.renderPokemon()
+	          { style: { border: 'solid 1px silver', clear: 'both', margin: '10px', padding: '10px' } },
+	          this.renderPokemon(),
+	          ' '
 	        ),
 	        React.createElement('hr', null),
 	        React.createElement(
@@ -13675,7 +13680,6 @@
 	    value: function propTypes() {
 	      return {
 	        pokemon: _react.PropTypes.object.isRequired,
-	        name: _react.PropTypes.string.isRequired,
 	        selectForBattle: _react.PropTypes.func.isRequired,
 	        selectedForBattle: _react.PropTypes.array.isRequired
 	      };
@@ -13725,13 +13729,9 @@
 	    key: 'render',
 	    value: function render() {
 	      return React.createElement(
-	        'div',
-	        null,
-	        React.createElement(
-	          'a',
-	          { href: 'javascript:;', onClick: this.onClick.bind(this) },
-	          this.props.name
-	        )
+	        'a',
+	        { href: 'javascript:;', onClick: this.onClick.bind(this) },
+	        this.props.name
 	      );
 	    }
 	  }], [{

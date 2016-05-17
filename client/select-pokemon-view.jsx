@@ -6,7 +6,6 @@ export class SelectPokemonView extends Component {
   static propTypes() {
     return {
       pokemon: PropTypes.object.isRequired,
-      name: PropTypes.string.isRequired,
       selectForBattle: PropTypes.func.isRequired,
       selectedForBattle: PropTypes.array.isRequired
     };
@@ -15,12 +14,15 @@ export class SelectPokemonView extends Component {
   renderPokemon() {
     return map(this.props.pokemon, p => {
       return (
-        <PokemonLink
-          name={p.name}
-          id={p.url}
-          key={p.url}
-          selected={this.props.selectForBattle}
-        />);
+        <div className="col-md-2 col-sm-2 col-xs-2">
+          <PokemonLink
+            name={p.name}
+            id={p.url}
+            key={p.url}
+            selected={this.props.selectForBattle}
+          />
+        </div>
+      );
     });
   }
 
@@ -38,8 +40,9 @@ export class SelectPokemonView extends Component {
   render() {
     return (
       <div>
-        <div>
+        <div style={{ border: 'solid 1px silver', clear: 'both', margin: '10px', padding: '10px' }}>
           {this.renderPokemon()}
+          &nbsp;
         </div>
         <hr />
         <div>

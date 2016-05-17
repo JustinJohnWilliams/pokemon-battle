@@ -16,9 +16,7 @@ export class PokemonLink extends Component {
 
   render() {
     return (
-      <div>
-        <a href='javascript:;' onClick={this.onClick.bind(this)}>{this.props.name}</a>
-      </div>
+      <a href='javascript:;' onClick={this.onClick.bind(this)}>{this.props.name}</a>
     );
   }
 }
