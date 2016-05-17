@@ -1,17 +1,25 @@
-import { Component } from 'react';
+import { Component, PropTypes } from 'react';
 import req from 'reqwest';
 import { bind, map, find, sortBy } from 'lodash';
 
 class SelectPokemonView extends Component {
+  static propTypes() {
+    return {
+      pokemon: PropTypes.object.isRequired,
+      name: PropTypes.string.isRequired,
+      selectForBattle: PropTypes.func.isRequired,
+      selectedForBattle: PropTypes.array.isRequired
+    };
+  }
 
   renderPokemon() {
     return map(this.props.pokemon, p => {
       return (
         <PokemonLink
-           name={p.name}
-           id={p.url}
-           key={p.url}
-           selected={this.props.selectForBattle}
+          name={p.name}
+          id={p.url}
+          key={p.url}
+          selected={this.props.selectForBattle}
         />);
     });
   }
@@ -20,10 +28,10 @@ class SelectPokemonView extends Component {
     return map(this.props.selectedForBattle, p => {
       return (
         <PokemonLink
-           name={p.name}
-           id={p.url}
-           key={p.url}
-           />);
+          name={p.name}
+          id={p.url}
+          key={p.url}
+        />);
     });
   }
 
@@ -53,6 +61,14 @@ class InitGameView extends Component {
 }
 
 class PokemonLink extends Component {
+  static propTypes() {
+    return {
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      selected: PropTypes.func.isRequired
+    };
+  }
+
   onClick() {
     console.log(this.props.id);
     this.props.selected(this.props.id);
@@ -71,25 +87,28 @@ class PokemonBattleContainer extends Component {
   constructor() {
     super();
     this.state = {
-      pokemon: [ ],
-      selectedForBattle: [ ],
+      pokemon: [],
+      selectedForBattle: [],
       playerId: null,
       game: { }
     };
   }
 
   componentDidMount() {
+  }
+
+  getPokemon() {
     req({
       url: '/pokemon',
       method: 'get',
       success: bind((r) => {
-        this.setState({ pokemon: sortBy(r, ["name"])});
+        this.setState({ pokemon: sortBy(r, ['name']) });
       }, this)
     });
   }
 
   selectForBattle(id) {
-    let selected = find(this.state.pokemon, { url: id });
+    const selected = find(this.state.pokemon, { url: id });
     this.setState({
       selectedForBattle: this.state.selectedForBattle.concat(selected)
     });
@@ -100,12 +119,14 @@ class PokemonBattleContainer extends Component {
   }
 
   render() {
-    if(this.state.playerId == null) return (<InitGameView joinGame={this.joinGame.bind(this)} />);
+    if (this.state.playerId == null) return (<InitGameView joinGame={this.joinGame.bind(this)} />);
+
     return (
       <SelectPokemonView
-         pokemon={this.state.pokemon}
-         selectForBattle={this.selectForBattle.bind(this)}
-         selectedForBattle={this.state.selectedForBattle} />
+        pokemon={this.state.pokemon}
+        selectForBattle={this.selectForBattle.bind(this)}
+        selectedForBattle={this.state.selectedForBattle}
+      />
     );
   }
 
