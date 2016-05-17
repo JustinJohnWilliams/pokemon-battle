@@ -1,11 +1,26 @@
 import { getPokemon } from './pokemon.js';
-import { joinGame } from './game.js';
+import {
+  joinGame,
+  player1SelectPokemon,
+  player2SelectPokemon,
+  isGameReady
+} from './game.js';
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const path = require('path');
 let game = { player1: null, player2: null };
+
+const selectPokemon = {
+  1: player1SelectPokemon,
+  2: player2SelectPokemon
+};
+
+const playerFor = {
+  1: () => game.player1,
+  2: () => game.player2
+};
 
 app.use('/public', express.static('public'));
 
@@ -22,6 +37,18 @@ app.get('/sandbox', function (req, res) {
 
 app.get('/pokemon', function (req, res) {
   getPokemon().then(r => res.json(r));
+});
+
+app.post('/select-pokemon', (req, res) => {
+  selectPokemon[req.body.playerId](game, req.body.pokemon);
+
+  res.json({
+    pokemon: playerFor[req.body.playerId]().pokemon
+  });
+});
+
+app.get('/is-game-ready', (req, res) => {
+  res.json({ isGameReady: isGameReady(game) });
 });
 
 app.post('/join', function (req, res) {

@@ -27,7 +27,9 @@ open canopy
 open runner
 open System
 open System.Collections.ObjectModel
+open System.Collections.Generic
 open FSharp.Data
+open FSharp.Data.JsonExtensions
 open Nessos.UnionArgParser
 open types
 open reporters
@@ -36,6 +38,7 @@ open OpenQA.Selenium.Firefox
 open OpenQA.Selenium
 open OpenQA.Selenium.Support.UI
 open OpenQA.Selenium.Interactions
+
 
 let exists selector =
   let e = someElement selector
@@ -72,6 +75,9 @@ let resetGame _ =
   url "http://localhost:3000/reset-game"
   url index
 
+let getGame _ =
+  let response = "http://localhost:3000/game" |> createRequest Get |> getResponse
+  JsonValue.Parse response.EntityBody.Value
 
 openBrowser()
 let player1 = browser
@@ -84,12 +90,23 @@ resetGame ()
 switchTo player1
 url index
 click "Join Game"
+click "pikachu"
+click "kabuto"
+click "rattata"
+click "raichu"
+click "jynx"
 switchTo player2
 url index
 click "Join Game"
+click "beedrill"
+click "golbat"
+click "mankey"
+click "staryu"
+click "vulpix"
+
 url "http://localhost:3000/game"
 resetGame ()
 
 reload()
 
-url "http://localhost:3000/sandbox"
+getGame () |> printfn "%A"

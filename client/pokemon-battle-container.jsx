@@ -3,6 +3,7 @@ import { bind, find, sortBy } from 'lodash';
 import req from 'reqwest';
 import { SelectPokemonView } from './select-pokemon-view.jsx';
 import { InitGameView } from './init-game-view.jsx';
+import { BattleArenaView } from './battle-arena-view.jsx';
 
 export class PokemonBattleContainer extends Component {
   constructor() {
@@ -17,13 +18,25 @@ export class PokemonBattleContainer extends Component {
 
   componentDidMount() {
     this.getPokemon();
+    this.poll();
+  }
+
+  poll() {
+    req({
+      url: '/is-game-ready',
+      method: 'get',
+      success: bind(r => {
+        this.setState({ isGameReady: r.isGameReady });
+        setTimeout(bind(() => this.poll(), this), 1000);
+      }, this)
+    });
   }
 
   getPokemon() {
     req({
       url: '/pokemon',
       method: 'get',
-      success: bind((r) => {
+      success: bind(r => {
         this.setState({ pokemon: sortBy(r, ['name']) });
       }, this)
     });
@@ -31,8 +44,16 @@ export class PokemonBattleContainer extends Component {
 
   selectForBattle(id) {
     const selected = find(this.state.pokemon, { url: id });
-    this.setState({
-      selectedForBattle: this.state.selectedForBattle.concat(selected)
+
+    req({
+      url: '/select-pokemon',
+      method: 'post',
+      data: { pokemon: selected, playerId: this.state.playerId },
+      success: bind(r => {
+        this.setState({
+          selectedForBattle: r.pokemon
+        });
+      }, this)
     });
   }
 
@@ -49,15 +70,21 @@ export class PokemonBattleContainer extends Component {
   }
 
   render() {
-    if (this.state.playerId == null) return (<InitGameView joinGame={this.joinGame.bind(this)} />);
+    if (this.state.isGameReady) {
+      return <BattleArenaView />;
+    }
 
-    return (
-      <SelectPokemonView
-        playerId={this.state.playerId}
-        pokemon={this.state.pokemon}
-        selectForBattle={this.selectForBattle.bind(this)}
-        selectedForBattle={this.state.selectedForBattle}
-      />
-    );
+    if (this.state.playerId) {
+      return (
+        <SelectPokemonView
+          playerId={this.state.playerId}
+          pokemon={this.state.pokemon}
+          selectForBattle={this.selectForBattle.bind(this)}
+          selectedForBattle={this.state.selectedForBattle}
+        />
+      );
+    }
+
+    return <InitGameView joinGame={this.joinGame.bind(this)} />;
   }
 }

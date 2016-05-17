@@ -7,14 +7,10 @@ export class InitGameView extends Component {
     };
   }
 
-  joinGame() {
-    this.props.joinGame();
-  }
-
   render() {
     return (
       <div>
-        <a href='javascript:;' onClick={this.joinGame.bind(this)}>Join Game</a>
+        <a href='javascript:;' onClick={this.props.joinGame}>Join Game</a>
       </div>
     );
   }
