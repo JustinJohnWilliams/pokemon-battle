@@ -95,6 +95,7 @@ class PokemonBattleContainer extends Component {
   }
 
   componentDidMount() {
+    this.getPokemon();
   }
 
   getPokemon() {
@@ -129,7 +130,6 @@ class PokemonBattleContainer extends Component {
       />
     );
   }
-
 }
 
 function initApp() {

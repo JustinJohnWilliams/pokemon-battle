@@ -1,11 +1,11 @@
 import { getPokemon } from './pokemon.js';
 import { joinGame } from './game.js';
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
-var path = require('path');
-var game = { player1: null, player2: null };
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const path = require('path');
+const game = { player1: null, player2: null };
 
 app.use('/public', express.static('public'));
 
@@ -21,10 +21,9 @@ app.get('/pokemon', function (req, res) {
 });
 
 app.post('/join', function (req, res) {
-  let success = joinGame(game);
-  if(success) {
-    res.json(game);
-  } else {
+  const success = joinGame(game);
+  if (success) res.json(game);
+  else {
     res.status(400);
     res.send('no dice for you');
   }

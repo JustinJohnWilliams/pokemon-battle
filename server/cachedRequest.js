@@ -5,23 +5,22 @@ import bluebird from 'bluebird';
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
-var client = redis.createClient();
+const client = redis.createClient();
 
 function uri(path) {
   return `http://pokeapi.co/api/v2/${path}`;
 }
 
 export function get(path, selectClause) {
-  var fullUri = uri(path);
+  const fullUri = uri(path);
+
   return new Promise((resolve, reject) => {
     client.get(fullUri, (err, result) => {
-      if(!result) {
+      if (!result) {
         unirest
           .get(fullUri)
           .end(r => {
-            if(r.statusCode == 404) {
-              return reject(new Error('invalid uri: ' + fullUri));
-            }
+            if (r.statusCode == 404) return reject(new Error('invalid uri: ' + fullUri));
 
             return set(fullUri,
                        r.body,
@@ -37,7 +36,7 @@ export function get(path, selectClause) {
 
 function set(key, data, failure, success) {
   return client.set(key, JSON.stringify(data), err => {
-    if(err) { failure(err); }
-    else { success(data); }
+    if (err) failure(err);
+    else success(data);
   });
 }
