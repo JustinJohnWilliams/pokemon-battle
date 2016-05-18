@@ -1,4 +1,4 @@
-import { joinGame, player1SelectPokemon, player2SelectPokemon } from '../server/game.js';
+import { joinGame, selectPokemon } from '../server/game.js';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 chai.use(chaiAsPromised);
@@ -22,17 +22,17 @@ export function makeGameReady() {
   joinGame(game);
   joinGame(game);
 
-  player1SelectPokemon(game, { name: 'staryu', url: 'http://pokeapi.co/api/v2/pokemon-species/120/' });
-  player1SelectPokemon(game, { name: 'scyther', url: 'http://pokeapi.co/api/v2/pokemon-species/123/' });
-  player1SelectPokemon(game, { name: 'pinsir', url: 'http://pokeapi.co/api/v2/pokemon-species/127/' });
-  player1SelectPokemon(game, { name: 'tauros', url: 'http://pokeapi.co/api/v2/pokemon-species/128/' });
-  player1SelectPokemon(game, { name: 'magikarp', url: 'http://pokeapi.co/api/v2/pokemon-species/129/' });
+  selectPokemon(game, '1', { name: 'staryu', url: 'http://pokeapi.co/api/v2/pokemon-species/120/' });
+  selectPokemon(game, '1', { name: 'scyther', url: 'http://pokeapi.co/api/v2/pokemon-species/123/' });
+  selectPokemon(game, '1', { name: 'pinsir', url: 'http://pokeapi.co/api/v2/pokemon-species/127/' });
+  selectPokemon(game, '1', { name: 'tauros', url: 'http://pokeapi.co/api/v2/pokemon-species/128/' });
+  selectPokemon(game, '1', { name: 'magikarp', url: 'http://pokeapi.co/api/v2/pokemon-species/129/' });
 
-  player2SelectPokemon(game, { name: 'lickitung', url: 'http://pokeapi.co/api/v2/pokemon-species/108/' });
-  player2SelectPokemon(game, { name: 'koffing', url: 'http://pokeapi.co/api/v2/pokemon-species/109/' });
-  player2SelectPokemon(game, { name: 'ryhorn', url: 'http://pokeapi.co/api/v2/pokemon-species/111/' });
-  player2SelectPokemon(game, { name: 'tangela', url: 'http://pokeapi.co/api/v2/pokemon-species/114/' });
-  player2SelectPokemon(game, { name: 'kangaskhan', url: 'http://pokeapi.co/api/v2/pokemon-species/115/' });
+  selectPokemon(game, '2', { name: 'lickitung', url: 'http://pokeapi.co/api/v2/pokemon-species/108/' });
+  selectPokemon(game, '2', { name: 'koffing', url: 'http://pokeapi.co/api/v2/pokemon-species/109/' });
+  selectPokemon(game, '2', { name: 'ryhorn', url: 'http://pokeapi.co/api/v2/pokemon-species/111/' });
+  selectPokemon(game, '2', { name: 'tangela', url: 'http://pokeapi.co/api/v2/pokemon-species/114/' });
+  selectPokemon(game, '2', { name: 'kangaskhan', url: 'http://pokeapi.co/api/v2/pokemon-species/115/' });
 
   return game;
 }

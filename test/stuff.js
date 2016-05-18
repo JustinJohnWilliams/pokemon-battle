@@ -1,8 +1,7 @@
-import { equal, getIn } from './test_helper.js';
+import { equal, getIn, makeGameReady } from './test_helper.js';
 import { getPokemon } from '../server/pokemon.js';
 import { joinGame,
-         player1SelectPokemon,
-         player2SelectPokemon,
+         selectPokemon,
          isGameReady } from '../server/game.js';
 
 import assert from 'assert';
@@ -27,15 +26,15 @@ describe('gotta catch them all', () => {
     joinGame(game);
     joinGame(game);
 
-    player1SelectPokemon(game, { name: 'pikachu' });
-    player1SelectPokemon(game, { name: 'pikachu2' });
-    player1SelectPokemon(game, { name: 'pikachu3' });
-    player1SelectPokemon(game, { name: 'pikachu4' });
-    player1SelectPokemon(game, { name: 'pikachu5' });
-    assert.equal(game.player1.pokemon.length, 5);
+    selectPokemon(game, '1', { name: 'pikachu' });
+    selectPokemon(game, '1', { name: 'pikachu2' });
+    selectPokemon(game, '1', { name: 'pikachu3' });
+    selectPokemon(game, '1', { name: 'pikachu4' });
+    selectPokemon(game, '1', { name: 'pikachu5' });
+    assert.equal(game['1'].pokemon.length, 5);
 
-    player1SelectPokemon(game, { name: 'pikachu6' });
-    assert.equal(game.player1.pokemon.length, 5);
+    selectPokemon(game, '1', { name: 'pikachu6' });
+    assert.equal(game['1'].pokemon.length, 5);
   });
 
   it('game ready?', () => {
@@ -49,24 +48,30 @@ describe('gotta catch them all', () => {
     joinGame(game);
     assert.equal(isGameReady(game), false);
 
-    player1SelectPokemon(game, { name: 'pikachu' });
-    player2SelectPokemon(game, { name: 'pikachu' });
+    selectPokemon(game, '1', { name: 'pikachu' });
+    selectPokemon(game, '2', { name: 'pikachu' });
     assert.equal(isGameReady(game), false);
 
-    player1SelectPokemon(game, { name: 'pikachu' });
-    player2SelectPokemon(game, { name: 'pikachu' });
+    selectPokemon(game, '1', { name: 'pikachu' });
+    selectPokemon(game, '2', { name: 'pikachu' });
     assert.equal(isGameReady(game), false);
 
-    player1SelectPokemon(game, { name: 'pikachu' });
-    player2SelectPokemon(game, { name: 'pikachu' });
+    selectPokemon(game, '1', { name: 'pikachu' });
+    selectPokemon(game, '2', { name: 'pikachu' });
     assert.equal(isGameReady(game), false);
 
-    player1SelectPokemon(game, { name: 'pikachu' });
-    player2SelectPokemon(game, { name: 'pikachu' });
+    selectPokemon(game, '1', { name: 'pikachu' });
+    selectPokemon(game, '2', { name: 'pikachu' });
     assert.equal(isGameReady(game), false);
 
-    player1SelectPokemon(game, { name: 'pikachu' });
-    player2SelectPokemon(game, { name: 'pikachu' });
+    selectPokemon(game, '1', { name: 'pikachu' });
+    selectPokemon(game, '2', { name: 'pikachu' });
     assert.equal(isGameReady(game), true);
+  });
+
+  it('select pokemon for battle', () => {
+    const game = makeGameReady();
+
+
   });
 });

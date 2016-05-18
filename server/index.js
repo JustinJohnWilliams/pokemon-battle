@@ -1,8 +1,7 @@
 import { getPokemon } from './pokemon.js';
 import {
   joinGame,
-  player1SelectPokemon,
-  player2SelectPokemon,
+  selectPokemon,
   isGameReady
 } from './game.js';
 
@@ -10,17 +9,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const path = require('path');
-let game = { player1: null, player2: null };
-
-const selectPokemon = {
-  1: player1SelectPokemon,
-  2: player2SelectPokemon
-};
-
-const playerFor = {
-  1: () => game.player1,
-  2: () => game.player2
-};
+let game = {};
 
 app.use('/public', express.static('public'));
 
@@ -40,10 +29,10 @@ app.get('/pokemon', (req, res) => {
 });
 
 app.post('/select-pokemon', (req, res) => {
-  selectPokemon[req.body.playerId](game, req.body.pokemon);
+  selectPokemon(game, req.body.playerId, req.body.pokemon);
 
   res.json({
-    pokemon: playerFor[req.body.playerId]().pokemon
+    pokemon: game[req.body.playerId].pokemon
   });
 });
 
@@ -62,7 +51,7 @@ app.post('/join', (req, res) => {
   const success = joinGame(game);
   if (success) {
     let player = { playerId: 1 };
-    if (game.player2) player = { playerId: 2 };
+    if (game['2']) player = { playerId: 2 };
     res.json(player);
   } else {
     res.status(400);
