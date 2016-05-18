@@ -4,7 +4,8 @@ import {
   selectPokemon,
   isGameReady,
   findPokemon,
-  choosePokemonForBattle
+  choosePokemonForBattle,
+  isReadyToBattle
 } from './game.js';
 
 const express = require('express');
@@ -59,6 +60,11 @@ app.get('/game-state', (req, res) => {
     currentPokemon: {
       1: null,
       2: null
+    },
+    isReadyForBattle: isReadyToBattle(game),
+    isPlayerReadyForBattle: {
+      1: isReadyToBattle(game, '1'),
+      2: isReadyToBattle(game, '2')
     }
   });
 });
