@@ -27,15 +27,15 @@ app.use('/public', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.get('/sandbox', function (req, res) {
+app.get('/sandbox', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/sandbox.html'));
 });
 
-app.get('/pokemon', function (req, res) {
+app.get('/pokemon', (req, res) => {
   getPokemon().then(r => res.json(r));
 });
 
@@ -51,7 +51,7 @@ app.get('/is-game-ready', (req, res) => {
   res.json({ isGameReady: isGameReady(game) });
 });
 
-app.post('/join', function (req, res) {
+app.post('/join', (req, res) => {
   const success = joinGame(game);
   if (success) {
     let player = { playerId: 1 };

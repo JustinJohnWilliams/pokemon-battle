@@ -12,7 +12,10 @@ function uri(path) {
 }
 
 export function get(path, selectClause) {
-  const fullUri = uri(path);
+  let fullUri = path;
+  if (!fullUri.match(/http/)) {
+    fullUri = uri(path);
+  }
 
   return new Promise((resolve, reject) => {
     client.get(fullUri, (err, result) => {
