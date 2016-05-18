@@ -8,7 +8,7 @@ export class BattleArenaView extends Component {
       currentTurn: PropTypes.boolean.isRequired,
       currentPokemon: PropTypes.object.isRequired,
       selectedForBattle: PropTypes.array.isRequired,
-      assignCurrentPokemon: PropTypes.func.isRequired
+      choosePokemonForBattle: PropTypes.func.isRequired
     };
   }
 
@@ -23,7 +23,7 @@ export class BattleArenaView extends Component {
             <PokemonLink
               id={p.url}
               name={p.name}
-              selected={this.props.assignCurrentPokemon}
+              selected={this.props.choosePokemonForBattle}
             />
           </div>
         );

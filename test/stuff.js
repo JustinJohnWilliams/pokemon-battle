@@ -85,9 +85,10 @@ describe('gotta catch them all', () => {
   });
 
   it('select pokemon for battle', () => {
+    assert.equal(isReadyToBattle({}), false);
     const game = makeGameReady();
 
-    assert.equal(!!isReadyToBattle(game), false);
+    assert.equal(isReadyToBattle(game), false);
 
     choosePokemonForBattle(
       game,

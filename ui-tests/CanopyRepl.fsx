@@ -115,7 +115,7 @@ reload()
 
 getGame () |> printfn "%A"
 
-// let response = "http://localhost:3000/is-game-ready" |> createRequest Get |> getResponse
-// JsonValue.Parse response.EntityBody.Value
+let response = "http://localhost:3000/game-state" |> createRequest Get |> getResponse
+JsonValue.Parse response.EntityBody.Value
 
 quit()

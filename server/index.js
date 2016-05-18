@@ -32,7 +32,7 @@ app.get('/pokemon', (req, res) => {
 });
 
 app.post('/select-pokemon', (req, res) => {
-  selectPokemon(game, req.body.playerId, req.body.pokemon);
+  selectPokemon(game, req.body.playerId, req.body.pokemonId);
 
   res.json({
     pokemon: game[req.body.playerId].pokemon

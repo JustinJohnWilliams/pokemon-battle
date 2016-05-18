@@ -31,7 +31,7 @@ export function isGameReady(game) {
 }
 
 export function isReadyToBattle(game, player) {
-  if (player) return !!game[player].chosenForBattle;
+  if (player) return !!((game[player] || { }).chosenForBattle);
 
   return isReadyToBattle(game, '1') && isReadyToBattle(game, '2');
 }
