@@ -57,9 +57,9 @@ app.get('/game-state', (req, res) => {
   res.json({
     isGameReady: isGameReady(game),
     currentTurn: 1,
-    currentPokemon: {
-      1: null,
-      2: null
+    chosenForBattle: {
+      1: (game['1'] || { }).chosenForBattle,
+      2: (game['2'] || { }).chosenForBattle
     },
     isReadyForBattle: isReadyToBattle(game),
     isPlayerReadyForBattle: {

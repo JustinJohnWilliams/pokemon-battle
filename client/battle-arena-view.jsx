@@ -6,7 +6,7 @@ export class BattleArenaView extends Component {
   static propTypes() {
     return {
       currentTurn: PropTypes.boolean.isRequired,
-      currentPokemon: PropTypes.object.isRequired,
+      chosenForBattle: PropTypes.object.isRequired,
       selectedForBattle: PropTypes.array.isRequired,
       choosePokemonForBattle: PropTypes.func.isRequired
     };
@@ -14,7 +14,7 @@ export class BattleArenaView extends Component {
 
   renderChooseYourPokemon() {
     if (!this.props.currentTurn) return null;
-    if (this.props.currentPokemon) return null;
+    if (this.props.chosenForBattle) return null;
 
     return (
       map(this.props.selectedForBattle, p => {
@@ -32,7 +32,7 @@ export class BattleArenaView extends Component {
   }
 
   renderCurrentTurn() {
-    if (!this.props.currentPokemon) return null;
+    if (!this.props.chosenForBattle) return null;
     if (!this.props.currentTurn) return null;
 
     return (

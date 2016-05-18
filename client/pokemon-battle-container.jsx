@@ -30,7 +30,7 @@ export class PokemonBattleContainer extends Component {
         this.setState({
           isGameReady: r.isGameReady,
           currentTurn: parseInt(r.currentTurn) == parseInt(this.state.playerId),
-          currentPokemon: r.currentPokemon[this.state.playerId]
+          chosenForBattle: r.chosenForBattle[this.state.playerId]
         });
         setTimeout(bind(() => this.poll(), this), 1000);
       }, this)
@@ -53,7 +53,7 @@ export class PokemonBattleContainer extends Component {
     req({
       url: '/select-pokemon',
       method: 'post',
-      data: { pokemon: selected, playerId: this.state.playerId },
+      data: { pokemonId: selected, playerId: this.state.playerId },
       success: bind(r => {
         this.setState({
           selectedForBattle: r.pokemon
@@ -76,7 +76,7 @@ export class PokemonBattleContainer extends Component {
 
   choosePokemonForBattle(id) {
     req({
-      url: '/select-pokemon',
+      url: '/choose-pokemon-for-battle',
       method: 'post',
       data: { playerId: this.state.playerId, pokemonId: id }
     });
@@ -87,7 +87,7 @@ export class PokemonBattleContainer extends Component {
       return (
         <BattleArenaView
           currentTurn={this.state.currentTurn}
-          currentPokemon={this.state.currentPokemon}
+          chosenForBattle={this.state.chosenForBattle}
           selectedForBattle={this.state.selectedForBattle}
           choosePokemonForBattle={this.choosePokemonForBattle.bind(this)}
         />
