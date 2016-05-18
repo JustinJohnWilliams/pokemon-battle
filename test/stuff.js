@@ -1,8 +1,15 @@
+//fswatch test/stuff.js | xargs -n1 -I{} npm test
+
 import { equal, getIn, makeGameReady } from './test_helper.js';
 import { getPokemon } from '../server/pokemon.js';
 import { joinGame,
+         isReadyToBattle,
+         choosePokemonForBattle,
          selectPokemon,
+         findPokemon,
          isGameReady } from '../server/game.js';
+
+import { first } from 'lodash';
 
 import assert from 'assert';
 
@@ -69,9 +76,37 @@ describe('gotta catch them all', () => {
     assert.equal(isGameReady(game), true);
   });
 
+  it('find pokemon', () => {
+    const game = makeGameReady();
+
+    assert.equal(
+      game['1'].pokemon[0],
+      findPokemon(game, '1', game['1'].pokemon[0].url));
+  });
+
   it('select pokemon for battle', () => {
     const game = makeGameReady();
 
+    assert.equal(!!isReadyToBattle(game), false);
 
+    choosePokemonForBattle(
+      game,
+      '1',
+      first(game['1'].pokemon));
+
+    assert.equal(isReadyToBattle(game, '1'), true);
+
+    assert.equal(isReadyToBattle(game, '2'), false);
+
+    assert.equal(isReadyToBattle(game), false);
+
+    choosePokemonForBattle(
+      game,
+      '2',
+      first(game['2'].pokemon));
+
+    assert.equal(isReadyToBattle(game), true);
+
+    assert.equal(isReadyToBattle(game, '2'), true);
   });
 });

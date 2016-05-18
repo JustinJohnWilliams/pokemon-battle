@@ -2,7 +2,9 @@ import { getPokemon } from './pokemon.js';
 import {
   joinGame,
   selectPokemon,
-  isGameReady
+  isGameReady,
+  findPokemon,
+  choosePokemonForBattle
 } from './game.js';
 
 const express = require('express');
@@ -34,6 +36,20 @@ app.post('/select-pokemon', (req, res) => {
   res.json({
     pokemon: game[req.body.playerId].pokemon
   });
+});
+
+app.post('/choose-pokemon-for-battle', (req, res) => {
+  const pokemon = findPokemon(
+    game,
+    req.body.playerId,
+    req.body.pokemonId);
+
+  choosePokemonForBattle(
+    game,
+    req.body.playerId,
+    pokemon);
+
+  res.json({ pokemon });
 });
 
 app.get('/game-state', (req, res) => {
