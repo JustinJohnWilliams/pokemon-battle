@@ -47,8 +47,15 @@ app.post('/select-pokemon', (req, res) => {
   });
 });
 
-app.get('/is-game-ready', (req, res) => {
-  res.json({ isGameReady: isGameReady(game) });
+app.get('/game-state', (req, res) => {
+  res.json({
+    isGameReady: isGameReady(game),
+    currentTurn: 1,
+    currentPokemon: {
+      1: null,
+      2: null
+    }
+  });
 });
 
 app.post('/join', (req, res) => {

@@ -13,7 +13,12 @@ export class SelectPokemonView extends Component {
   }
 
   border() {
-    return { border: 'solid 1px silver', clear: 'both', margin: '10px', padding: '10px' };
+    return {
+      border: 'solid 1px silver',
+      clear: 'both',
+      margin: '10px',
+      padding: '10px'
+    };
   }
 
   renderPokemon() {

@@ -23,10 +23,14 @@ export class PokemonBattleContainer extends Component {
 
   poll() {
     req({
-      url: '/is-game-ready',
+      url: '/game-state',
       method: 'get',
       success: bind(r => {
-        this.setState({ isGameReady: r.isGameReady });
+        this.setState({
+          isGameReady: r.isGameReady,
+          currentTurn: parseInt(r.currentTurn) == parseInt(this.state.playerId),
+          currentPokemon: r.currentPokemon[this.state.playerId]
+        });
         setTimeout(bind(() => this.poll(), this), 1000);
       }, this)
     });
@@ -69,9 +73,20 @@ export class PokemonBattleContainer extends Component {
     this.setState({ playerId: r.playerId });
   }
 
+  assignCurrentPokemon(id) {
+    alert(id);
+  }
+
   render() {
     if (this.state.isGameReady) {
-      return <BattleArenaView />;
+      return (
+        <BattleArenaView
+          currentTurn={this.state.currentTurn}
+          currentPokemon={this.state.currentPokemon}
+          selectedForBattle={this.state.selectedForBattle}
+          assignCurrentPokemon={this.assignCurrentPokemon.bind(this)}
+        />
+      );
     }
 
     if (this.state.playerId) {
