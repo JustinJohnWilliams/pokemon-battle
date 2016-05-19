@@ -1,7 +1,7 @@
 //fswatch test/api_test.js | xargs -n1 -I{} npm test
 
 import { equal, getIn, makeGameReady } from './test_helper.js';
-import { getPokemonList } from '../server/pokemon.js';
+import { getPokemonList } from '../server/api.js';
 import { joinGame,
          isReadyToBattle,
          choosePokemonForBattle,
@@ -19,6 +19,13 @@ describe('le api', () => {
       getIn(getPokemonList(), r => r.length),
       151,
       'I didn\'t get 151 pokemon');
+  });
+
+  specify('retrieving a single pokemon', () => {
+    return equal(
+      getIn(getPokemonList(1), r => r.length),
+      1,
+      'I didn\'t get a single pokemon');
   });
 
   specify('retriving a single pokemon', () => {

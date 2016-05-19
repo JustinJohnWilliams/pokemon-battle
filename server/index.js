@@ -1,4 +1,4 @@
-import { getPokemonList } from './pokemon.js';
+import { getPokemonList } from './api.js';
 import {
   joinGame,
   selectPokemon,

@@ -1,7 +1,7 @@
 //fswatch test/stuff.js | xargs -n1 -I{} npm test
 
 import { equal, getIn, makeGameReady } from './test_helper.js';
-import { getPokemonList } from '../server/pokemon.js';
+import { getPokemonList } from '../server/api.js';
 import { joinGame,
          isReadyToBattle,
          choosePokemonForBattle,
