@@ -17,6 +17,12 @@ export function equal(actual, expected, message) {
     .to.eventually.equal(expected, message);
 }
 
+export function deepEqual(actual, expected, message) {
+  return chai
+    .expect(actual)
+    .to.eventually.deep.equal(expected, message);
+}
+
 export function makeGameReady() {
   const game = {};
   joinGame(game);
