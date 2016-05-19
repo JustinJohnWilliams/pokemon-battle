@@ -43,3 +43,10 @@ export function choosePokemonForBattle(game, player, pokemon) {
 export function findPokemon(game, player, pokemonId) {
   return find(game[player].pokemon, { url: pokemonId });
 }
+
+export function attack(game, from, to) {
+  game[to].chosenForBattle.hp = game[to].chosenForBattle.hp || 100;
+  game[from].chosenForBattle.attackPower = game[from].chosenForBattle.attackPower || 10;
+
+  game[to].chosenForBattle.hp -= game[from].chosenForBattle.attackPower;
+}
