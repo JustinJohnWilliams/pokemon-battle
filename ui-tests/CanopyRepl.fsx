@@ -113,6 +113,8 @@ resetGame ()
 
 reload()
 
+url "http://localhost:3000/sandbox"
+
 getGame () |> printfn "%A"
 
 let response = "http://localhost:3000/game-state" |> createRequest Get |> getResponse

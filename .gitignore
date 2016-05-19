@@ -20,3 +20,4 @@ node_modules
 .sass-cache
 /canopy-repl/.#CanopyRepl.fsx
 .tern-port
+/._tmux.conf

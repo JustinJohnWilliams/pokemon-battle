@@ -50,3 +50,19 @@ export function attack(game, from, to) {
 
   game[to].chosenForBattle.hp -= game[from].chosenForBattle.attackPower;
 }
+
+export function gameState(game) {
+  return {
+    isGameReady: isGameReady(game),
+    currentTurn: 1,
+    chosenForBattle: {
+      1: (game['1'] || { }).chosenForBattle,
+      2: (game['2'] || { }).chosenForBattle
+    },
+    isReadyForBattle: isReadyToBattle(game),
+    isPlayerReadyForBattle: {
+      1: isReadyToBattle(game, '1'),
+      2: isReadyToBattle(game, '2')
+    }
+  };
+}

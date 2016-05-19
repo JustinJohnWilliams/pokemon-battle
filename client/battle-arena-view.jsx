@@ -37,7 +37,7 @@ export class BattleArenaView extends Component {
 
     return (
       <div>
-        <a href="javascript:;">Attack</a>
+        <a href="javascript:;">Attack!</a>
       </div>
     );
   }

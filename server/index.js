@@ -5,7 +5,8 @@ import {
   isGameReady,
   findPokemon,
   choosePokemonForBattle,
-  isReadyToBattle
+  isReadyToBattle,
+  gameState
 } from './game.js';
 
 const express = require('express');
@@ -54,19 +55,7 @@ app.post('/choose-pokemon-for-battle', (req, res) => {
 });
 
 app.get('/game-state', (req, res) => {
-  res.json({
-    isGameReady: isGameReady(game),
-    currentTurn: 1,
-    chosenForBattle: {
-      1: (game['1'] || { }).chosenForBattle,
-      2: (game['2'] || { }).chosenForBattle
-    },
-    isReadyForBattle: isReadyToBattle(game),
-    isPlayerReadyForBattle: {
-      1: isReadyToBattle(game, '1'),
-      2: isReadyToBattle(game, '2')
-    }
-  });
+  res.json(gameState(game));
 });
 
 app.post('/join', (req, res) => {

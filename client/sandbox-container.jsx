@@ -1,10 +1,10 @@
+import { first, last, take } from 'lodash';
 import { Component } from 'react';
-import { SelectPokemonView } from './select-pokemon-view.jsx';
-import { take } from 'lodash';
+import { BattleArenaView } from './battle-arena-view.jsx';
 
 export class SandboxContainer extends Component {
   render() {
-    let pokemon = [
+    const pokemon = [
       { name: 'pikachu', url: 'pikachu' },
       { name: 'ditto', url: 'ditto' },
       { name: 'clefairy', url: 'clefairy' },
@@ -31,11 +31,23 @@ export class SandboxContainer extends Component {
       { name: 'flareon', url: 'flareon' }
     ];
 
+    let selectedForBattle = take(pokemon, 5);
+
+    let chosenForBattle = {
+      1: first(pokemon),
+      2: last(pokemon)
+    };
+
     return (
-      <SelectPokemonView
-        pokemon={pokemon}
-        selectedForBattle={take(pokemon, 5)}
-        playerId={1}
-      />);
+      <div>
+        <BattleArenaView
+          currentTurn={'true'}
+          chosenForBattle={chosenForBattle}
+          id={"http://pokeapi.co/api/v2/pokemon/54"}
+          name={"pokemon"}
+          selectedForBattle={selectedForBattle}
+        />
+      </div>
+    );
   }
 }
