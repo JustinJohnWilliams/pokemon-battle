@@ -3,49 +3,61 @@ import { Component } from 'react';
 import { BattleArenaView } from './battle-arena-view.jsx';
 
 export class SandboxContainer extends Component {
+  constructor() {
+    super();
+  }
+
+  attack(from, to) {
+    req({
+      url: '/attack',
+      method: 'post',
+      data: { from: from, to: to }
+    });
+  }
+
   render() {
     const pokemon = [
-      { name: 'pikachu', url: 'pikachu' },
-      { name: 'ditto', url: 'ditto' },
-      { name: 'clefairy', url: 'clefairy' },
-      { name: 'cloyster', url: 'cloyster' },
-      { name: 'cubone', url: 'cubone' },
-      { name: 'dewgong', url: 'dewgong' },
-      { name: 'diglett', url: 'diglett' },
-      { name: 'ditto', url: 'ditto' },
-      { name: 'dodrio', url: 'dodrio' },
-      { name: 'doduo', url: 'doduo' },
-      { name: 'dragonair', url: 'dragonair' },
-      { name: 'dragonite', url: 'dragonite' },
-      { name: 'dratini', url: 'dratini' },
-      { name: 'drowzee', url: 'drowzee' },
-      { name: 'dugtrio', url: 'dugtrio' },
-      { name: 'eevee', url: 'eevee' },
-      { name: 'ekans', url: 'ekans' },
-      { name: 'electabuzz', url: 'electabuzz' },
-      { name: 'electrode', url: 'electrode' },
-      { name: 'exeggcute', url: 'exeggcute' },
-      { name: 'exeggutor', url: 'exeggutor' },
-      { name: 'farfetchd', url: 'farfetchd' },
-      { name: 'fearow', url: 'fearow' },
-      { name: 'flareon', url: 'flareon' }
+      { name: 'pikachu', hp: 45, url: 'pikachu' },
+      { name: 'ditto', hp: 45, url: 'ditto' },
+      { name: 'clefairy', hp: 45, url: 'clefairy' },
+      { name: 'cloyster', hp: 45, url: 'cloyster' },
+      { name: 'cubone', hp: 45, url: 'cubone' },
+      { name: 'dewgong', hp: 45, url: 'dewgong' },
+      { name: 'diglett', hp: 45, url: 'diglett' },
+      { name: 'ditto', hp: 45, url: 'ditto' },
+      { name: 'dodrio', hp: 45, url: 'dodrio' },
+      { name: 'doduo', hp: 45, url: 'doduo' },
+      { name: 'dragonair', hp: 45, url: 'dragonair' },
+      { name: 'dragonite', hp: 45, url: 'dragonite' },
+      { name: 'dratini', hp: 45, url: 'dratini' },
+      { name: 'drowzee', hp: 45, url: 'drowzee' },
+      { name: 'dugtrio', hp: 45, url: 'dugtrio' },
+      { name: 'eevee', hp: 45, url: 'eevee' },
+      { name: 'ekans', hp: 45, url: 'ekans' },
+      { name: 'electabuzz', hp: 45, url: 'electabuzz' },
+      { name: 'electrode', hp: 45, url: 'electrode' },
+      { name: 'exeggcute', hp: 45, url: 'exeggcute' },
+      { name: 'exeggutor', hp: 45, url: 'exeggutor' },
+      { name: 'farfetchd', hp: 45, url: 'farfetchd' },
+      { name: 'fearow', hp: 45, url: 'fearow' },
+      { name: 'flareon', hp: 100, url: 'flareon' }
     ];
 
-    let selectedForBattle = take(pokemon, 5);
+    let chosenForBattle = first(pokemon);
+    let opponentChosenForBattle = last(pokemon);
 
-    let chosenForBattle = {
-      1: first(pokemon),
-      2: last(pokemon)
-    };
+    let selectedForBattle = take(pokemon, 5);
 
     return (
       <div>
         <BattleArenaView
           currentTurn={'true'}
           chosenForBattle={chosenForBattle}
+          opponentChosenForBattle={opponentChosenForBattle}
           id={"http://pokeapi.co/api/v2/pokemon/54"}
           name={"pokemon"}
           selectedForBattle={selectedForBattle}
+          attack={this.attack.bind(this)}
         />
       </div>
     );

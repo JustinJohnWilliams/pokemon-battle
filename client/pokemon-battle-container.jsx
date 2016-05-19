@@ -82,6 +82,14 @@ export class PokemonBattleContainer extends Component {
     });
   }
 
+  attack(from, to) {
+    req({
+      url: '/attack',
+      method: 'post',
+      data: { from: from, to: to }
+    });
+  }
+
   render() {
     if (this.state.isGameReady) {
       return (
@@ -90,6 +98,7 @@ export class PokemonBattleContainer extends Component {
           chosenForBattle={this.state.chosenForBattle}
           selectedForBattle={this.state.selectedForBattle}
           choosePokemonForBattle={this.choosePokemonForBattle.bind(this)}
+          attack={this.attack.bind(this)}
         />
       );
     }

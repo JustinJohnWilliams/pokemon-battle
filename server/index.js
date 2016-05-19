@@ -6,6 +6,7 @@ import {
   findPokemon,
   choosePokemonForBattle,
   isReadyToBattle,
+  attack,
   gameState
 } from './game.js';
 
@@ -73,6 +74,12 @@ app.post('/join', (req, res) => {
 app.get('/reset-game', (req, res) => {
   game = {};
   res.json(game);
+});
+
+app.post('/attack', (req, res) => {
+  console.log(req.body.from);
+  console.log(req.body.to);
+  attack(game, req.body.from, req.body.to);
 });
 
 app.get('/game', (req, res) => res.json(game));
