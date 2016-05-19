@@ -1,4 +1,5 @@
-import { getPokemonList } from './api.js';
+import { getPokemonList, getPokemon } from './api.js';
+
 import {
   joinGame,
   selectPokemon,
@@ -47,12 +48,14 @@ app.post('/choose-pokemon-for-battle', (req, res) => {
     req.body.playerId,
     req.body.pokemonId);
 
-  choosePokemonForBattle(
-    game,
-    req.body.playerId,
-    pokemon);
+  getPokemon(pokemon.url).then(r => {
+    choosePokemonForBattle(
+      game,
+      req.body.playerId,
+      r);
 
-  res.json({ pokemon });
+    res.json({ pokemon: r });
+  });
 });
 
 app.get('/game-state', (req, res) => {
