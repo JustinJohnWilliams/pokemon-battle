@@ -1,4 +1,4 @@
-import { getPokemon } from './pokemon.js';
+import { getPokemonList } from './pokemon.js';
 import {
   joinGame,
   selectPokemon,
@@ -28,7 +28,7 @@ app.get('/sandbox', (req, res) => {
 });
 
 app.get('/pokemon', (req, res) => {
-  getPokemon().then(r => res.json(r));
+  getPokemonList().then(r => res.json(r));
 });
 
 app.post('/select-pokemon', (req, res) => {

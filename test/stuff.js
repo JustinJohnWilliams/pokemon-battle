@@ -1,7 +1,7 @@
 //fswatch test/stuff.js | xargs -n1 -I{} npm test
 
 import { equal, getIn, makeGameReady } from './test_helper.js';
-import { getPokemon } from '../server/pokemon.js';
+import { getPokemonList } from '../server/pokemon.js';
 import { joinGame,
          isReadyToBattle,
          choosePokemonForBattle,
@@ -14,13 +14,6 @@ import { first } from 'lodash';
 import assert from 'assert';
 
 describe('gotta catch them all', () => {
-  it('retrieving pokemon', () => {
-    return equal(
-      getIn(getPokemon(), r => r.length),
-      151,
-      'I didn\'t get 151 pokemon');
-  });
-
   it('joining game', () => {
     const game = { };
     assert.equal(joinGame(game), true);

@@ -1,7 +1,7 @@
 import { get } from './cachedRequest.js';
 
-export function getPokemon() {
-  return get('generation/1', r => r.pokemon_species);
+export function getPokemonList() {
+  return get('pokemon/?limit=151', r => r.results);
 }
 
 export function getPokemonMoves(url) {
