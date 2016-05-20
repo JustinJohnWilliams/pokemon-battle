@@ -28,17 +28,17 @@ export function makeGameReady() {
   joinGame(game);
   joinGame(game);
 
-  selectPokemon(game, '1', { name: 'staryu', url: 'http://pokeapi.co/api/v2/pokemon-species/120/' });
-  selectPokemon(game, '1', { name: 'scyther', url: 'http://pokeapi.co/api/v2/pokemon-species/123/' });
-  selectPokemon(game, '1', { name: 'pinsir', url: 'http://pokeapi.co/api/v2/pokemon-species/127/' });
-  selectPokemon(game, '1', { name: 'tauros', url: 'http://pokeapi.co/api/v2/pokemon-species/128/' });
-  selectPokemon(game, '1', { name: 'magikarp', url: 'http://pokeapi.co/api/v2/pokemon-species/129/' });
+  selectPokemon(game, '1', { url: 'http://bulbasaur', name: 'bulbasaur', hp: 45, speed: 45, attack: 49, defense: 49 });
+  selectPokemon(game, '1', { url: 'http://scyther', name: 'scyther', hp: 45, speed: 45, attack: 49, defense: 49 });
+  selectPokemon(game, '1', { url: 'http://pinsir', name: 'pinsir', hp: 45, speed: 45, attack: 49, defense: 49 });
+  selectPokemon(game, '1', { url: 'http://tauros', name: 'tauros', hp: 45, speed: 45, attack: 49, defense: 49 });
+  selectPokemon(game, '1', { url: 'http://magikarp', name: 'magikarp', hp: 45, speed: 45, attack: 49, defense: 49 });
 
-  selectPokemon(game, '2', { name: 'lickitung', url: 'http://pokeapi.co/api/v2/pokemon-species/108/' });
-  selectPokemon(game, '2', { name: 'koffing', url: 'http://pokeapi.co/api/v2/pokemon-species/109/' });
-  selectPokemon(game, '2', { name: 'ryhorn', url: 'http://pokeapi.co/api/v2/pokemon-species/111/' });
-  selectPokemon(game, '2', { name: 'tangela', url: 'http://pokeapi.co/api/v2/pokemon-species/114/' });
-  selectPokemon(game, '2', { name: 'kangaskhan', url: 'http://pokeapi.co/api/v2/pokemon-species/115/' });
+  selectPokemon(game, '2', { url: 'http://lickitung', name: 'lickitung', hp: 45, speed: 45, attack: 49, defense: 49 });
+  selectPokemon(game, '2', { url: 'http://koffing', name: 'koffing', hp: 45, speed: 45, attack: 49, defense: 49 });
+  selectPokemon(game, '2', { url: 'http://ryhorn', name: 'ryhorn', hp: 45, speed: 45, attack: 49, defense: 49 });
+  selectPokemon(game, '2', { url: 'http://tangela', name: 'tangela', hp: 45, speed: 45, attack: 49, defense: 49 });
+  selectPokemon(game, '2', { url: 'http://kangaskhan', name: 'kangaskhan', hp: 45, speed: 45, attack: 49, defense: 49 });
 
   return game;
 }

@@ -20,20 +20,32 @@ describe('damage', () => {
 
     choosePokemonForBattle(
       game,
-      '1',
-      first(game['1'].pokemon));
+      '1', {
+        url: 'http://bulbasaur',
+        name: 'bulbasaur',
+        hp: 45,
+        speed: 45,
+        attack: 49,
+        defense: 49
+      });
 
     choosePokemonForBattle(
       game,
-      '2',
-      first(game['2'].pokemon));
+      '2', {
+        url: 'http://lickitung',
+        name: 'lickitung',
+        hp: 45,
+        speed: 45,
+        attack: 49,
+        defense: 49
+      });
 
     attack(game, '1', '2');
 
-    assert(game['2'].chosenForBattle.hp, 90);
+    assert.equal(game['2'].chosenForBattle.hp, 43);
 
     attack(game, '1', '2');
 
-    assert(game['2'].chosenForBattle.hp, 80);
+    assert.equal(game['2'].chosenForBattle.hp, 41);
   });
 });
