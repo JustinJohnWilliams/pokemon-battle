@@ -13,6 +13,7 @@ export class PokemonBattleContainer extends Component {
       chosenForBattle: null,
       opponentChosenForBattle: null,
       playerId: null,
+      opponentPlayerId: null,
       game: { }
     };
   }
@@ -27,11 +28,11 @@ export class PokemonBattleContainer extends Component {
       url: '/game-state',
       method: 'get',
       success: bind(r => {
-        console.log(r);
         this.setState({
           isGameReady: r.isGameReady,
           currentTurn: parseInt(r.currentTurn) == parseInt(this.state.playerId),
-          chosenForBattle: r.chosenForBattle[this.state.playerId]
+          chosenForBattle: r.chosenForBattle[this.state.playerId],
+          opponentChosenForBattle: r.chosenForBattle[this.state.opponentPlayerId]
         });
         setTimeout(bind(() => this.poll(), this), 1000);
       }, this)
@@ -72,7 +73,11 @@ export class PokemonBattleContainer extends Component {
   }
 
   assignPlayer(r) {
-    this.setState({ playerId: r.playerId });
+    const other = { 1: 2, 2: 1 };
+    this.setState({
+      playerId: r.playerId,
+      opponentPlayerId: other[r.playerId]
+    });
   }
 
   choosePokemonForBattle(id) {
@@ -83,11 +88,11 @@ export class PokemonBattleContainer extends Component {
     });
   }
 
-  attack(from, to) {
+  attack() {
     req({
       url: '/attack',
       method: 'post',
-      data: { from: from, to: to }
+      data: { from: this.state.playerId, to: this.state.opponentPlayerId }
     });
   }
 

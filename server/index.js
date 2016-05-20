@@ -80,9 +80,7 @@ app.get('/reset-game', (req, res) => {
 });
 
 app.post('/attack', (req, res) => {
-  console.log(req.body.from);
-  console.log(req.body.to);
-  attack(game, req.body.from, req.body.to);
+  attack(game, req.body.playerId, req.body.opponentPlayerId);
 });
 
 app.get('/game', (req, res) => res.json(game));

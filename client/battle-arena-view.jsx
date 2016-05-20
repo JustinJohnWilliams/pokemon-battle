@@ -14,12 +14,6 @@ export class BattleArenaView extends Component {
     };
   }
 
-  onClick() {
-    this.props.attack(
-      this.props.chosenForBattle,
-      this.props.opponentChosenForBattle);
-  }
-
   renderSelectedPokemon() {
     return map(this.props.selectedForBattle, p => {
       return (
@@ -46,9 +40,9 @@ export class BattleArenaView extends Component {
     );
   }
 
-  renderCurrentTurn() {
+  renderField() {
     if (!this.props.chosenForBattle) return null;
-    if (!this.props.currentTurn) return null;
+    if (!this.props.opponentChosenForBattle) return null;
 
     return (
       <div>
@@ -56,7 +50,7 @@ export class BattleArenaView extends Component {
           <div className="col-md-6 col-sm-6 col-xs-6">
             <h3>You choose:</h3>
             <h4>{this.props.chosenForBattle.name} ({this.props.chosenForBattle.hp} hp)</h4>
-            <a href="javascript:;" onClick={this.onClick.bind(this)}>Attack!</a>
+            <a href="javascript:;" onClick={this.props.attack}>Attack!</a>
           </div>
           <div className="col-md-6 col-sm-6 col-xs-6">
             <h3>Oppenent chooses: </h3>
@@ -71,7 +65,7 @@ export class BattleArenaView extends Component {
     return (
       <div>
         {this.renderChooseYourPokemon()}
-        {this.renderCurrentTurn()}
+        {this.renderField()}
       </div>
     );
   }
