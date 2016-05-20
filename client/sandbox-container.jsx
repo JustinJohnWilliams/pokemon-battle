@@ -54,8 +54,6 @@ export class SandboxContainer extends Component {
           currentTurn={'true'}
           chosenForBattle={chosenForBattle}
           opponentChosenForBattle={opponentChosenForBattle}
-          id={"http://pokeapi.co/api/v2/pokemon/54"}
-          name={"pokemon"}
           selectedForBattle={selectedForBattle}
           attack={this.attack.bind(this)}
         />

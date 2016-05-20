@@ -10,7 +10,8 @@ export class PokemonBattleContainer extends Component {
     super();
     this.state = {
       pokemon: [],
-      chosenForBattle: [],
+      chosenForBattle: null,
+      opponentChosenForBattle: null,
       playerId: null,
       game: { }
     };
@@ -96,6 +97,7 @@ export class PokemonBattleContainer extends Component {
         <BattleArenaView
           currentTurn={this.state.currentTurn}
           chosenForBattle={this.state.chosenForBattle}
+          opponentChosenForBattle={this.state.opponentChosenForBattle}
           selectedForBattle={this.state.selectedForBattle}
           choosePokemonForBattle={this.choosePokemonForBattle.bind(this)}
           attack={this.attack.bind(this)}

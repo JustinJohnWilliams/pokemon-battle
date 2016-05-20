@@ -20,22 +20,29 @@ export class BattleArenaView extends Component {
       this.props.opponentChosenForBattle);
   }
 
+  renderSelectedPokemon() {
+    return map(this.props.selectedForBattle, p => {
+      return (
+        <div>
+          <PokemonLink
+            name={p.name}
+            id={p.url}
+            key={p.url}
+            selected={this.props.choosePokemonForBattle}
+          />
+        </div>
+      );
+    });
+  }
+
   renderChooseYourPokemon() {
-    if (!this.props.currentTurn) return null;
     if (this.props.chosenForBattle) return null;
 
     return (
-      map(this.props.selectedForBattle, p => {
-        return (
-          <div>
-            <PokemonLink
-              id={p.url}
-              name={p.name}
-              selected={this.props.choosePokemonForBattle}
-            />
-          </div>
-        );
-      })
+      <div>
+        <h3>Select your Pokemon for Battle!</h3>
+        {this.renderSelectedPokemon()}
+      </div>
     );
   }
 
@@ -43,8 +50,6 @@ export class BattleArenaView extends Component {
     if (!this.props.chosenForBattle) return null;
     if (!this.props.currentTurn) return null;
 
-    console.log(this.props.chosenForBattle);
-    console.log(this.props.opponentChosenForBattle);
     return (
       <div>
         <div className="row">
