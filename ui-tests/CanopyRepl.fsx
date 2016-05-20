@@ -108,6 +108,18 @@ switchTo player1
 sleep 1
 click "pikachu"
 
+switchTo player2
+sleep 1
+click "beedrill"
+
+switchTo player1
+sleep 1
+click "Attack!"
+
+switchTo player2
+sleep 1
+click "Attack!"
+
 url "http://localhost:3000/game"
 resetGame ()
 
