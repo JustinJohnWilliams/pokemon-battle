@@ -92,7 +92,10 @@ export class PokemonBattleContainer extends Component {
     req({
       url: '/attack',
       method: 'post',
-      data: { from: this.state.playerId, to: this.state.opponentPlayerId }
+      data: {
+        playerId: this.state.playerId,
+        opponentPlayerId: this.state.opponentPlayerId
+      }
     });
   }
 
