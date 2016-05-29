@@ -10,7 +10,7 @@ class HomeView extends Component {
       <div>
         <div>You are currently being awesome at your home.</div>
         <ul>
-          <li>You have a pikachu. It says "pika" constantly.</li>
+          <li>You have a Pikachu. It says "pika" constantly.</li>
         </ul>
         <hr />
         <div>
@@ -45,7 +45,7 @@ class ForestView extends Component {
         <hr />
         <div>
           <p>You are chillin' like a villian right now.</p>
-          <a href="javascript:;">Go look for some trouble.</a><br />
+          <a href="javascript:;" onClick={this.props.findTrouble}>Go look for some trouble.</a><br />
           <a href="javascript:;" onClick={this.props.goHome}>Go home.</a>
         </div>
         <hr />
@@ -92,12 +92,24 @@ export class RpgContainer extends Component {
     this.changeLocation('home');
   }
 
+  findTrouble() {
+    if (this.state.location == 'forest') {
+      this.setState({
+        battling: {
+          name: 'Bulbasaur',
+          actionText: 'A Bulbasuar comes a rushing. Whipping vines and shit fly at your face.'
+        }
+      });
+    }
+  }
+
   render() {
     return (
       <RpgView
         location={this.state.location}
         changeLocation={this.changeLocation.bind(this)}
         goHome={this.goHome.bind(this)}
+        findTrouble={this.findTrouble.bind(this)}
       />
     );
   }

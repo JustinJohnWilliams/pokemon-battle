@@ -135,4 +135,5 @@ quit()
 
 url "http://localhost:3000/rpg"
 click "[data-ui-location='forest']"
-click "Go home"
+click "Go home."
+click "Go look for some trouble."
