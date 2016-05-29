@@ -1,5 +1,6 @@
 import { SandboxContainer } from './sandbox-container.jsx';
 import { PokemonBattleContainer } from './pokemon-battle-container.jsx';
+import { RpgContainer } from './rpg-container.jsx';
 
 function initSandboxApp() {
   ReactDOM.render(
@@ -17,5 +18,14 @@ function initApp() {
   );
 }
 
+function initRpg() {
+  ReactDOM.render(
+    <RpgContainer />,
+    document.getElementById('content')
+  );
+}
+
+
 module.exports.initApp = initApp;
 module.exports.initSandboxApp = initSandboxApp;
+module.exports.initRpg = initRpg;

@@ -30,6 +30,10 @@ app.get('/sandbox', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/sandbox.html'));
 });
 
+app.get('/rpg', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/rpg.html'));
+});
+
 app.get('/pokemon', (req, res) => {
   getPokemonList().then(r => res.json(r));
 });

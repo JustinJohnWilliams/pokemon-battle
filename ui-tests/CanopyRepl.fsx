@@ -120,7 +120,6 @@ switchTo player2
 sleep 1
 click "Attack!"
 
-url "http://localhost:3000/game"
 resetGame ()
 
 reload()
@@ -133,3 +132,7 @@ let response = "http://localhost:3000/game-state" |> createRequest Get |> getRes
 JsonValue.Parse response.EntityBody.Value
 
 quit()
+
+url "http://localhost:3000/rpg"
+click "[data-ui-location='forest']"
+click "Go home"
