@@ -1,10 +1,36 @@
 import { Component } from 'react';
-
+import { bind } from 'lodash';
 
 export class BattleArenaView extends Component {
+  renderProgessBar(pokemon) {
+    const percent = Math.round((pokemon.at / 1800) * 100);
+
+    if (percent < 100) {
+      return (
+        <div style={{
+          background: `linear-gradient(90deg, #A6D785, white ${percent}%, white)`,
+          border: 'solid 1px black',
+          width: '100%',
+          height: '10px'
+        }}
+        ></div>
+      );
+    }
+
+    return (
+      <div style={{
+        background: `linear-gradient(90deg, green, green ${percent}%, white)`,
+        border: 'solid 1px black',
+        width: '100%',
+        height: '10px'
+      }}
+      ></div>
+    );
+  }
 
   renderField() {
     if (!this.props.battling) return null;
+
     return (
       <div>
         <div>
@@ -12,11 +38,15 @@ export class BattleArenaView extends Component {
           <hr />
           {this.props.battling.actionText}
           <hr />
+          {this.renderProgessBar(this.props.battling)}
+          <hr />
         </div>
         <div>
           <h2>{this.props.chosen.name}</h2>
           <hr />
           {this.props.chosen.actionText}
+          <hr />
+          {this.renderProgessBar(this.props.chosen)}
           <hr />
         </div>
       </div>
@@ -72,7 +102,7 @@ class ForestView extends Component {
 
     return (
       <div>
-        <p>You are chillin' like a villian right now.</p>
+        <p>You are chillin&#39; like a villian right now.</p>
         <a href="javascript:;" onClick={this.props.findTrouble}>Go look for some trouble.</a><br />
         <a href="javascript:;" onClick={this.props.goHome}>Go home.</a>
         <hr />
@@ -145,18 +175,45 @@ export class RpgContainer extends Component {
     this.changeLocation('home');
   }
 
+  tickPokemon(pokemon) {
+    if (!pokemon.canAttack) pokemon.at += pokemon.speed;
+
+    if (pokemon.at >= 1800) {
+      pokemon.canAttack = true;
+    } else {
+      pokemon.canAttack = false;
+    }
+
+    return pokemon;
+  }
+
+  tickBattle() {
+    this.setState({
+      chosen: this.tickPokemon(this.state.chosen),
+      battling: this.tickPokemon(this.state.battling)
+    });
+
+    setTimeout(bind(() => {
+      this.tickBattle();
+    }, this), 500);
+  }
+
   findTrouble() {
     if (this.state.location == 'forest') {
       this.setState({
         chosen: {
           name: 'Pikachu',
-          actionText: 'It be yellin\' "Pika fuck you, bitch!"'
+          actionText: 'It be yellin\' "Pika fuck you, bitch!"',
+          speed: 90,
+          at: 0
         },
         battling: {
           name: 'Bulbasaur',
-          actionText: 'A Bulbasuar comes a rushing. Whipping vines and shit.'
+          actionText: 'It comes a rushing. Whipping vines and shit.',
+          speed: 45,
+          at: 0
         }
-      });
+      }, this.tickBattle);
     }
   }
 
