@@ -1,5 +1,37 @@
 import { Component } from 'react';
 
+
+export class BattleArenaView extends Component {
+
+  renderField() {
+    if (!this.props.battling) return null;
+    return (
+      <div>
+        <div>
+          <h2>{this.props.battling.name}</h2>
+          <hr />
+          {this.props.battling.actionText}
+          <hr />
+        </div>
+        <div>
+          <h2>{this.props.chosen.name}</h2>
+          <hr />
+          {this.props.chosen.actionText}
+          <hr />
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        {this.renderField()}
+      </div>
+    );
+  }
+}
+
 class HomeView extends Component {
   _goToForest(e) {
     this.props.changeLocation('forest');
@@ -35,6 +67,19 @@ class HomeView extends Component {
 }
 
 class ForestView extends Component {
+  renderOptions() {
+    if (this.props.battling) return null;
+
+    return (
+      <div>
+        <p>You are chillin' like a villian right now.</p>
+        <a href="javascript:;" onClick={this.props.findTrouble}>Go look for some trouble.</a><br />
+        <a href="javascript:;" onClick={this.props.goHome}>Go home.</a>
+        <hr />
+      </div>
+    );
+  }
+
   render() {
     return (
       <div>
@@ -43,12 +88,15 @@ class ForestView extends Component {
           <li>You has a pikachu. It says "pika" constantly.</li>
         </ul>
         <hr />
+
+        {this.renderOptions()}
+
         <div>
-          <p>You are chillin' like a villian right now.</p>
-          <a href="javascript:;" onClick={this.props.findTrouble}>Go look for some trouble.</a><br />
-          <a href="javascript:;" onClick={this.props.goHome}>Go home.</a>
+          <BattleArenaView
+            chosen={this.props.chosen}
+            battling={this.props.battling}
+          />
         </div>
-        <hr />
       </div>
     );
   }
@@ -67,7 +115,12 @@ class RpgView extends Component {
     if (this.props.location == 'forest') {
       return (
         <div>
-          <ForestView goHome={this.props.goHome} />
+          <ForestView
+            battling={this.props.battling}
+            goHome={this.props.goHome}
+            findTrouble={this.props.findTrouble}
+            chosen={this.props.chosen}
+          />
         </div>
       );
     }
@@ -95,9 +148,13 @@ export class RpgContainer extends Component {
   findTrouble() {
     if (this.state.location == 'forest') {
       this.setState({
+        chosen: {
+          name: 'Pikachu',
+          actionText: 'It be yellin\' "Pika fuck you, bitch!"'
+        },
         battling: {
           name: 'Bulbasaur',
-          actionText: 'A Bulbasuar comes a rushing. Whipping vines and shit fly at your face.'
+          actionText: 'A Bulbasuar comes a rushing. Whipping vines and shit.'
         }
       });
     }
@@ -107,31 +164,12 @@ export class RpgContainer extends Component {
     return (
       <RpgView
         location={this.state.location}
+        battling={this.state.battling}
         changeLocation={this.changeLocation.bind(this)}
         goHome={this.goHome.bind(this)}
         findTrouble={this.findTrouble.bind(this)}
+        chosen={this.state.chosen}
       />
     );
   }
 }
-
-
-/*
-<div>
-  <div>You are currently being awesome at your home.</div>
-  <ul>
-      <li>You has a pikachu. It says "pika" constantly.</li>
-  </ul>
-  <hr />
-  <div>
-      <p>There is a rock face. It looks freaking scary.</p>
-      <a href="javascript:;">Go be awesome over there</a>
-  </div>
-  <hr />
-  <div>
-      <p>There is a line of trees off in the distance.</p>
-      <a href="javascript:;">Go be awesome over there</a>
-  </div>
-  <hr />
-</div>
- */
