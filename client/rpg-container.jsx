@@ -30,9 +30,14 @@ export class BattleArenaView extends Component {
 
   renderAttack() {
     if (!this.props.chosen.canAttack) return null;
+    if (this.props.isGameOver) return null;
 
     return (
-      <a href='javascript:;' onClick={this.props.attackBattling}>Attack</a>
+      <div>
+        <a href='javascript:;' onClick={this.props.attackBattling}>Attack</a>
+        <br />
+        <a href='javascript:;' onClick={this.props.captureBattling}>Throw dat ball</a>
+      </div>
     );
   }
 
@@ -134,6 +139,8 @@ class ForestView extends Component {
           <BattleArenaView
             chosen={this.props.chosen}
             battling={this.props.battling}
+            isGameOver={this.props.isGameOver}
+            captureBattling={this.props.captureBattling}
             attackBattling={this.props.attackBattling}
           />
         </div>
@@ -160,6 +167,8 @@ class RpgView extends Component {
             goHome={this.props.goHome}
             findTrouble={this.props.findTrouble}
             attackBattling={this.props.attackBattling}
+            isGameOver={this.props.isGameOver}
+            captureBattling={this.props.captureBattling}
             chosen={this.props.chosen}
           />
         </div>
@@ -252,6 +261,14 @@ export class RpgContainer extends Component {
     }
   }
 
+  isGameOver() {
+    if (get('this.state.chosen.hp', 0) <= 0 || get('this.state.battling.hp', 0) <= 0) return true;
+    return false;
+  }
+
+  captureBattling() {
+  }
+
   render() {
     return (
       <RpgView
@@ -261,6 +278,8 @@ export class RpgContainer extends Component {
         goHome={this.goHome.bind(this)}
         findTrouble={this.findTrouble.bind(this)}
         attackBattling={this.attackBattling.bind(this)}
+        isGameOver={this.isGameOver()}
+        captureBattling={this.captureBattling.bind(this)}
         chosen={this.state.chosen}
       />
     );
