@@ -142,9 +142,7 @@ class ForestView extends Component {
           <li>You has a pikachu. It says "pika" constantly.</li>
         </ul>
         <hr />
-
         {this.renderOptions()}
-
         <div>
           <BattleArenaView
             chosen={this.props.chosen}
