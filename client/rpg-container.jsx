@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { bind, get } from 'lodash';
+import { bind, get, map } from 'lodash';
 
 export class BattleArenaView extends Component {
   renderProgessBar(pokemon) {
@@ -41,6 +41,14 @@ export class BattleArenaView extends Component {
     );
   }
 
+  renderPlayPlay() {
+    return (
+      <div>
+        {map(this.props.playByPlay, p => <div>{p}</div>)}
+      </div>
+    );
+  }
+
   renderField() {
     if (!this.props.battling) return null;
 
@@ -62,6 +70,8 @@ export class BattleArenaView extends Component {
           {this.renderProgessBar(this.props.chosen)}
           <hr />
           {this.renderAttack()}
+          <hr />
+          {this.renderPlayPlay()}
         </div>
       </div>
     );
@@ -141,6 +151,7 @@ class ForestView extends Component {
             battling={this.props.battling}
             isGameOver={this.props.isGameOver}
             captureBattling={this.props.captureBattling}
+            playByPlay={this.props.playByPlay}
             attackBattling={this.props.attackBattling}
           />
         </div>
@@ -169,6 +180,7 @@ class RpgView extends Component {
             attackBattling={this.props.attackBattling}
             isGameOver={this.props.isGameOver}
             captureBattling={this.props.captureBattling}
+            playByPlay={this.props.playByPlay}
             chosen={this.props.chosen}
           />
         </div>
@@ -184,7 +196,8 @@ export class RpgContainer extends Component {
     super();
     this.state = {
       location: 'home',
-      team: ['Pikachu']
+      team: ['Pikachu'],
+      playByPlay: []
     };
   }
 
@@ -209,21 +222,27 @@ export class RpgContainer extends Component {
   }
 
   tickBattle() {
-    if (this.state.chosen.hp <= 0) return;
-    if (this.state.battling.hp <= 0) return;
+    if (this.isGameOver()) return;
 
+    this.tickBattleCore();
+  }
+
+  tickBattleCore() {
     const chosen = this.tickPokemon(this.state.chosen);
-    const battling = this.tickPokemon(this.state.battling)
+    const battling = this.tickPokemon(this.state.battling);
+    let playByPlay = this.state.playByPlay;
 
     if (battling.canAttack) {
       chosen.hp -= 10;
       battling.at -= 1800;
       battling.canAttack = false;
+      playByPlay = playByPlay.concat(`${this.state.battling.name} attacks ${this.state.chosen.name} for 10.`);
     }
 
     this.setState({
       chosen: chosen,
-      battling: battling
+      battling: battling,
+      playByPlay
     });
 
     setTimeout(bind(() => {
@@ -238,7 +257,11 @@ export class RpgContainer extends Component {
     const chosen = this.state.chosen;
     chosen.at -= 1800;
 
-    this.setState({ battling, chosen });
+    this.setState({
+      battling,
+      chosen,
+      playByPlay: this.state.playByPlay.concat(`${this.state.chosen.name} attacks ${this.state.battling.name} for 10.`)
+    });
   }
 
   findTrouble() {
@@ -257,7 +280,8 @@ export class RpgContainer extends Component {
           speed: 45,
           hp: 50,
           at: 0
-        }
+        },
+        playByPlay: ['The throwdown has begun between Pikachu and Bulbasaur. Who will the bitch be?']
       }, this.tickBattle);
     }
   }
@@ -272,15 +296,21 @@ export class RpgContainer extends Component {
 
   captureBattling() {
     const battling = this.state.battling;
-
     const percent = 1.0 - (this.state.battling.hp / 50);
+    const team = this.state.team.concat(this.state.battling.name);
 
     if (Math.random(1) < percent) {
-      const team = this.state.team.concat(this.state.battling.name);
-
       battling.captured = true;
 
-      this.setState({ team });
+      this.setState({
+        team,
+        playByPlay: this.state.playByPlay.concat(`${battling.name} succumbs to your ball.`)
+      }, this.tickBattleCore());
+    } else {
+      this.setState({
+        team,
+        playByPlay: this.state.playByPlay.concat(`Your ball hits ${battling.name} in the head, but is batted away. Too stronk.`)
+      }, this.tickBattleCore());
     }
   }
 
@@ -295,6 +325,7 @@ export class RpgContainer extends Component {
         attackBattling={this.attackBattling.bind(this)}
         isGameOver={this.isGameOver()}
         captureBattling={this.captureBattling.bind(this)}
+        playByPlay={this.state.playByPlay}
         chosen={this.state.chosen}
       />
     );
