@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { bind } from 'lodash';
+import { bind, get } from 'lodash';
 
 export class BattleArenaView extends Component {
   renderProgessBar(pokemon) {
@@ -28,13 +28,21 @@ export class BattleArenaView extends Component {
     );
   }
 
+  renderAttack() {
+    if (!this.props.chosen.canAttack) return null;
+
+    return (
+      <a href='javascript:;' onClick={this.props.attackBattling}>Attack</a>
+    );
+  }
+
   renderField() {
     if (!this.props.battling) return null;
 
     return (
       <div>
         <div>
-          <h2>{this.props.battling.name}</h2>
+          <h2>{this.props.battling.name} (hp: {this.props.battling.hp})</h2>
           <hr />
           {this.props.battling.actionText}
           <hr />
@@ -42,12 +50,13 @@ export class BattleArenaView extends Component {
           <hr />
         </div>
         <div>
-          <h2>{this.props.chosen.name}</h2>
+          <h2>{this.props.chosen.name} (hp: {this.props.chosen.hp})</h2>
           <hr />
           {this.props.chosen.actionText}
           <hr />
           {this.renderProgessBar(this.props.chosen)}
           <hr />
+          {this.renderAttack()}
         </div>
       </div>
     );
@@ -125,6 +134,7 @@ class ForestView extends Component {
           <BattleArenaView
             chosen={this.props.chosen}
             battling={this.props.battling}
+            attackBattling={this.props.attackBattling}
           />
         </div>
       </div>
@@ -149,6 +159,7 @@ class RpgView extends Component {
             battling={this.props.battling}
             goHome={this.props.goHome}
             findTrouble={this.props.findTrouble}
+            attackBattling={this.props.attackBattling}
             chosen={this.props.chosen}
           />
         </div>
@@ -188,6 +199,9 @@ export class RpgContainer extends Component {
   }
 
   tickBattle() {
+    if (this.state.chosen.hp <= 0) return;
+    if (this.state.battling.hp <= 0) return;
+
     this.setState({
       chosen: this.tickPokemon(this.state.chosen),
       battling: this.tickPokemon(this.state.battling)
@@ -198,6 +212,16 @@ export class RpgContainer extends Component {
     }, this), 500);
   }
 
+  attackBattling() {
+    const battling = this.state.battling;
+    battling.hp -= 10;
+
+    const chosen = this.state.chosen;
+    chosen.at -= 1800;
+
+    this.setState({ battling, chosen });
+  }
+
   findTrouble() {
     if (this.state.location == 'forest') {
       this.setState({
@@ -205,12 +229,14 @@ export class RpgContainer extends Component {
           name: 'Pikachu',
           actionText: 'It be yellin\' "Pika fuck you, bitch!"',
           speed: 90,
+          hp: 50,
           at: 0
         },
         battling: {
           name: 'Bulbasaur',
           actionText: 'It comes a rushing. Whipping vines and shit.',
           speed: 45,
+          hp: 50,
           at: 0
         }
       }, this.tickBattle);
@@ -225,6 +251,7 @@ export class RpgContainer extends Component {
         changeLocation={this.changeLocation.bind(this)}
         goHome={this.goHome.bind(this)}
         findTrouble={this.findTrouble.bind(this)}
+        attackBattling={this.attackBattling.bind(this)}
         chosen={this.state.chosen}
       />
     );
