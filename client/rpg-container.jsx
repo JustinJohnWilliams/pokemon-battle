@@ -202,9 +202,18 @@ export class RpgContainer extends Component {
     if (this.state.chosen.hp <= 0) return;
     if (this.state.battling.hp <= 0) return;
 
+    const chosen = this.tickPokemon(this.state.chosen);
+    const battling = this.tickPokemon(this.state.battling)
+
+    if (battling.canAttack) {
+      chosen.hp -= 10;
+      battling.at -= 1800;
+      battling.canAttack = false;
+    }
+
     this.setState({
-      chosen: this.tickPokemon(this.state.chosen),
-      battling: this.tickPokemon(this.state.battling)
+      chosen: chosen,
+      battling: battling
     });
 
     setTimeout(bind(() => {
