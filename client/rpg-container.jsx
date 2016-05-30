@@ -183,7 +183,8 @@ export class RpgContainer extends Component {
   constructor() {
     super();
     this.state = {
-      location: 'home'
+      location: 'home',
+      team: ['Pikachu']
     };
   }
 
@@ -262,12 +263,25 @@ export class RpgContainer extends Component {
   }
 
   isGameOver() {
-    if (get(this, 'state.chosen.hp', 0) <= 0 || get(this, 'state.battling.hp', 0) <= 0) return true;
+    if (get(this.state, 'chosen.hp', 0) <= 0 ||
+        get(this.state, 'battling.hp', 0) <= 0 ||
+        get(this.state, 'battling.captured', false) == true) return true;
 
     return false;
   }
 
   captureBattling() {
+    const battling = this.state.battling;
+
+    const percent = 1.0 - (this.state.battling.hp / 50);
+
+    if (Math.random(1) < percent) {
+      const team = this.state.team.concat(this.state.battling.name);
+
+      battling.captured = true;
+
+      this.setState({ team });
+    }
   }
 
   render() {
