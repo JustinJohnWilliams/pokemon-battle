@@ -262,7 +262,8 @@ export class RpgContainer extends Component {
   }
 
   isGameOver() {
-    if (get('this.state.chosen.hp', 0) <= 0 || get('this.state.battling.hp', 0) <= 0) return true;
+    if (get(this, 'state.chosen.hp', 0) <= 0 || get(this, 'state.battling.hp', 0) <= 0) return true;
+
     return false;
   }
 
