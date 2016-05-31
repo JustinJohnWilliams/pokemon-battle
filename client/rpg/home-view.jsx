@@ -1,4 +1,12 @@
-class HomeView extends Component {
+import { Component, PropTypes } from 'react';
+
+export class HomeView extends Component {
+  static propTypes() {
+    return {
+      changeLocation: PropTypes.func.isRequired
+    };
+  }
+
   _goToForest(e) {
     this.props.changeLocation('forest');
   }
