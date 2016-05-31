@@ -21,7 +21,7 @@ export class BattleArenaView extends Component {
     if (percent < 100) {
       return (
         <div style={{
-          background: `linear-gradient(90deg, #A6D785, white ${percent}%, white)`,
+          background: `linear-gradient(90deg, green, white ${percent}%, white)`,
           border: 'solid 1px black',
           width: '100%',
           height: '10px'
@@ -59,7 +59,7 @@ export class BattleArenaView extends Component {
 
     return (
       <div>
-        <a href='javascript:;' onClick={this.props.goHome}>Go Home</a>
+        <a href='javascript:;' onClick={this.props.goHome}>Go home.</a>
       </div>
     );
   }
