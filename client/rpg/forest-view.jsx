@@ -1,4 +1,20 @@
-class ForestView extends Component {
+import { Component, PropTypes } from 'react';
+import { BattleArenaView } from './battle-arena-view.jsx';
+
+export class ForestView extends Component {
+  static propTypes() {
+    return {
+      battling: PropTypes.object.isRequired,
+      findTrouble: PropTypes.func.isRequired,
+      goHome: PropTypes.func.isRequired,
+      chosen: PropTypes.object.isRequired,
+      isGameOver: PropTypes.func.isRequired,
+      captureBattling: PropTypes.func.captureBattling,
+      playByPlay: PropTypes.array.isRequired,
+      attackBattling: PropTypes.func.isRequired
+    };
+  }
+
   renderOptions() {
     if (this.props.battling) return null;
 
