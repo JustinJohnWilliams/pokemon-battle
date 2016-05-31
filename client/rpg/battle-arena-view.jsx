@@ -8,7 +8,8 @@ export class BattleArenaView extends Component {
       isGameOver: PropTypes.boolean.isRequired,
       attackBattling: PropTypes.func.isRequired,
       captureBattling: PropTypes.func.isRequired,
-      playByPlay: Proptypes.array.isRequired,
+      playByPlay: PropTypes.array.isRequired,
+      goHome: PropTypes.func.isRequired,
       battling: PropTypes.object.isRequired
     };
   }
@@ -52,6 +53,17 @@ export class BattleArenaView extends Component {
     );
   }
 
+  renderPostBattle() {
+    if (!this.props.isGameOver) return null;
+
+    return (
+      <div>
+        <a href='javascript:;' onClick={this.props.goHome}>Go Home</a>
+      </div>
+    );
+  }
+
+
   renderPlayPlay() {
     return (
       <div>
@@ -81,6 +93,7 @@ export class BattleArenaView extends Component {
           {this.renderProgessBar(this.props.chosen)}
           <hr />
           {this.renderAttack()}
+          {this.renderPostBattle()}
           <hr />
           {this.renderPlayPlay()}
         </div>

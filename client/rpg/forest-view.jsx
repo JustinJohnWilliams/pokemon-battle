@@ -45,6 +45,7 @@ export class ForestView extends Component {
             captureBattling={this.props.captureBattling}
             playByPlay={this.props.playByPlay}
             attackBattling={this.props.attackBattling}
+            goHome={this.props.goHome}
           />
         </div>
       </div>
