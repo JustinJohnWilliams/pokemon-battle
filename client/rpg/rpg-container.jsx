@@ -20,10 +20,14 @@ export class RpgContainer extends Component {
     this.changeLocation('home');
   }
 
+  activeTurnThreshold() {
+    return 1800;
+  }
+
   tickPokemon(pokemon) {
     if (!pokemon.canAttack) pokemon.at += pokemon.speed;
 
-    if (pokemon.at >= 1800) {
+    if (pokemon.at >= this.activeTurnThreshold()) {
       pokemon.canAttack = true;
     } else {
       pokemon.canAttack = false;
@@ -45,7 +49,7 @@ export class RpgContainer extends Component {
 
     if (battling.canAttack) {
       chosen.hp -= 10;
-      battling.at -= 1800;
+      battling.at -= this.activeTurnThreshold();
       battling.canAttack = false;
       playByPlay = playByPlay.concat(`${this.state.battling.name} attacks ${this.state.chosen.name} for 10.`);
 
@@ -70,7 +74,7 @@ export class RpgContainer extends Component {
     battling.hp -= 10;
 
     const chosen = this.state.chosen;
-    chosen.at -= 1800;
+    chosen.at -= this.activeTurnThreshold();
 
     let playByPlay = this.state.playByPlay.concat(`${this.state.chosen.name} attacks ${this.state.battling.name} for 10.`);
 
@@ -120,7 +124,7 @@ export class RpgContainer extends Component {
     const chosen = this.state.chosen;
     const percent = 1.0 - (this.state.battling.hp / 50);
     const team = this.state.team.concat(this.state.battling.name);
-    chosen.at -= 1800;
+    chosen.at -= this.activeTurnThreshold();
 
     if (Math.random(1) < percent) {
       battling.captured = true;
@@ -151,6 +155,7 @@ export class RpgContainer extends Component {
         isGameOver={this.isGameOver()}
         captureBattling={this.captureBattling.bind(this)}
         playByPlay={this.state.playByPlay}
+        activeTurnThreshold={this.activeTurnThreshold()}
         chosen={this.state.chosen}
       />
     );

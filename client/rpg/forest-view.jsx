@@ -11,7 +11,8 @@ export class ForestView extends Component {
       isGameOver: PropTypes.func.isRequired,
       captureBattling: PropTypes.func.captureBattling,
       playByPlay: PropTypes.array.isRequired,
-      attackBattling: PropTypes.func.isRequired
+      attackBattling: PropTypes.func.isRequired,
+      activeTurnThreshold: PropTypes.number.isRequired
     };
   }
 
@@ -46,6 +47,7 @@ export class ForestView extends Component {
             playByPlay={this.props.playByPlay}
             attackBattling={this.props.attackBattling}
             goHome={this.props.goHome}
+            activeTurnThreshold={this.props.activeTurnThreshold}
           />
         </div>
       </div>

@@ -10,12 +10,13 @@ export class BattleArenaView extends Component {
       captureBattling: PropTypes.func.isRequired,
       playByPlay: PropTypes.array.isRequired,
       goHome: PropTypes.func.isRequired,
-      battling: PropTypes.object.isRequired
+      battling: PropTypes.object.isRequired,
+      activeTurnThreshold: PropTypes.number.isRequired
     };
   }
 
   renderProgessBar(pokemon) {
-    const percent = Math.round((pokemon.at / 1800) * 100);
+    const percent = Math.round((pokemon.at / this.props.activeTurnThreshold) * 100);
 
     if (percent < 100) {
       return (

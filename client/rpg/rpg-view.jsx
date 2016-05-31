@@ -14,7 +14,8 @@ export class RpgView extends Component {
       battling: PropTypes.object.isRequired,
       chosen: PropTypes.object.isRequired,
       isGameOver: PropTypes.boolean.isRequired,
-      playByPlay: PropTypes.array.isRequired
+      playByPlay: PropTypes.array.isRequired,
+      activeTurnThreshold: PropTypes.number.isRequired
     };
   }
 
@@ -39,6 +40,7 @@ export class RpgView extends Component {
             captureBattling={this.props.captureBattling}
             playByPlay={this.props.playByPlay}
             chosen={this.props.chosen}
+            activeTurnThreshold={this.props.activeTurnThreshold}
           />
         </div>
       );
