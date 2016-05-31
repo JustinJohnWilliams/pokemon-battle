@@ -48,6 +48,10 @@ export class RpgContainer extends Component {
       battling.at -= 1800;
       battling.canAttack = false;
       playByPlay = playByPlay.concat(`${this.state.battling.name} attacks ${this.state.chosen.name} for 10.`);
+
+      if (chosen.hp <= 0) {
+        playByPlay = playByPlay.concat(`${this.state.chosen.name} has fallen. Mauled and bloody. Poke-guts everywhere.`);
+      }
     }
 
     this.setState({
@@ -68,10 +72,16 @@ export class RpgContainer extends Component {
     const chosen = this.state.chosen;
     chosen.at -= 1800;
 
+    let playByPlay = this.state.playByPlay.concat(`${this.state.chosen.name} attacks ${this.state.battling.name} for 10.`);
+
+    if (battling.hp <= 0) {
+      playByPlay = playByPlay.concat(`${this.state.battling.name} has fallen. Mauled and bloody. Poke-guts everywhere.`);
+    }
+
     this.setState({
       battling,
       chosen,
-      playByPlay: this.state.playByPlay.concat(`${this.state.chosen.name} attacks ${this.state.battling.name} for 10.`)
+      playByPlay
     });
   }
 
@@ -107,19 +117,23 @@ export class RpgContainer extends Component {
 
   captureBattling() {
     const battling = this.state.battling;
+    const chosen = this.state.chosen;
     const percent = 1.0 - (this.state.battling.hp / 50);
     const team = this.state.team.concat(this.state.battling.name);
+    chosen.at -= 1800;
 
     if (Math.random(1) < percent) {
       battling.captured = true;
 
       this.setState({
         team,
+        chosen,
         playByPlay: this.state.playByPlay.concat(`${battling.name} succumbs to your ball.`)
       }, this.tickBattleCore());
     } else {
       this.setState({
         team,
+        chosen,
         playByPlay: this.state.playByPlay.concat(`Your ball hits ${battling.name} in the head, but is batted away. Too stronk.`)
       }, this.tickBattleCore());
     }
