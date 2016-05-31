@@ -157,6 +157,7 @@ export class RpgContainer extends Component {
         playByPlay={this.state.playByPlay}
         activeTurnThreshold={this.activeTurnThreshold()}
         chosen={this.state.chosen}
+        team={this.state.team}
       />
     );
   }

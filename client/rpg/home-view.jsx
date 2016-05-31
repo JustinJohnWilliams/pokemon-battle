@@ -1,9 +1,11 @@
 import { Component, PropTypes } from 'react';
+import { map } from 'lodash';
 
 export class HomeView extends Component {
   static propTypes() {
     return {
-      changeLocation: PropTypes.func.isRequired
+      changeLocation: PropTypes.func.isRequired,
+      team: PropTypes.array.isRequired
     };
   }
 
@@ -11,13 +13,21 @@ export class HomeView extends Component {
     this.props.changeLocation('forest');
   }
 
+  renderTeam() {
+    return (
+      <ul>
+        {map(this.props.team, p => <li>{p}</li>)}
+      </ul>
+    );
+  }
+
   render() {
     return (
       <div>
         <div>You are currently being awesome at your home.</div>
-        <ul>
-          <li>You have a Pikachu. It says "pika" constantly.</li>
-        </ul>
+        <br />
+        <div>Your bitches: </div>
+        {this.renderTeam()}
         <hr />
         <div>
           <p>There is a rock face jutting out. It looks freaking scary.</p>
