@@ -1,5 +1,5 @@
 import { Component, PropTypes } from 'react';
-import { map } from 'lodash';
+import { map, uniq } from 'lodash';
 
 export class HomeView extends Component {
   static propTypes() {
@@ -16,7 +16,7 @@ export class HomeView extends Component {
   renderTeam() {
     return (
       <ul>
-        {map(this.props.team, p => <li>{p}</li>)}
+        {map(uniq(this.props.team), p => <li>{p}</li>)}
       </ul>
     );
   }
