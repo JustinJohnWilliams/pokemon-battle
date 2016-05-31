@@ -1,4 +1,18 @@
+import { Component, PropTypes } from 'react';
+import { map } from 'lodash';
+
 export class BattleArenaView extends Component {
+  static propTypes() {
+    return {
+      chosen: PropTypes.object.isRequired,
+      isGameOver: PropTypes.boolean.isRequired,
+      attackBattling: PropTypes.func.isRequired,
+      captureBattling: PropTypes.func.isRequired,
+      playByPlay: Proptypes.array.isRequired,
+      battling: PropTypes.object.isRequired
+    };
+  }
+
   renderProgessBar(pokemon) {
     const percent = Math.round((pokemon.at / 1800) * 100);
 
