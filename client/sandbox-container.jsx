@@ -1,6 +1,6 @@
 import { first, last, take } from 'lodash';
 import { Component } from 'react';
-import { BattleArenaView } from './battle-arena-view.jsx';
+import { BattleArenaView } from './versus/battle-arena-view.jsx';
 
 export class SandboxContainer extends Component {
   constructor() {
