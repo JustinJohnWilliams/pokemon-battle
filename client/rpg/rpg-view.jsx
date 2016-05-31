@@ -1,4 +1,23 @@
-class RpgView extends Component {
+import { Component, PropTypes } from 'react';
+import { ForestView } from './forest-view.jsx';
+import { HomeView } from './home-view.jsx';
+
+export class RpgView extends Component {
+  static propTypes() {
+    return {
+      location: PropTypes.string.isRequired,
+      changeLocation: PropTypes.func.isRequired,
+      captureBattling: PropTypes.func.isRequired,
+      attackBattling: PropTypes.func.isRequired,
+      findTrouble: PropTypes.func.isRequired,
+      goHome: PropTypes.func.isRequired,
+      battling: PropTypes.object.isRequired,
+      chosen: PropTypes.object.isRequired,
+      isGameOver: PropTypes.boolean.isRequired,
+      playByPlay: PropTypes.array.isRequired
+    };
+  }
+
   render() {
     if (this.props.location == 'home') {
       return (
