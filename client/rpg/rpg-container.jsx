@@ -1,5 +1,6 @@
 import { Component } from 'react';
-import { bind, get, map } from 'lodash';
+import { bind, get } from 'lodash';
+import { RpgView } from './rpg-view.jsx';
 
 export class RpgContainer extends Component {
   constructor() {
