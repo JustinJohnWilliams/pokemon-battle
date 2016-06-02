@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { bind, get } from 'lodash';
+import { bind, get, remove } from 'lodash';
 import { RpgView } from './rpg-view.jsx';
 
 export class RpgContainer extends Component {
@@ -57,6 +57,7 @@ export class RpgContainer extends Component {
     const chosen = this.tickPokemon(this.state.chosen);
     const battling = this.tickPokemon(this.state.battling);
     let playByPlay = this.state.playByPlay;
+    let team = this.state.team;
 
     if (battling.canAttack) {
       chosen.hp -= 10;
@@ -66,13 +67,15 @@ export class RpgContainer extends Component {
 
       if (chosen.hp <= 0) {
         playByPlay = playByPlay.concat(`${this.state.chosen.name} has fallen. Mauled and bloody. Poke-guts everywhere.`);
+        team = remove(team, this.state.chosen);
       }
     }
 
     this.setState({
       chosen: chosen,
       battling: battling,
-      playByPlay
+      playByPlay,
+      team
     });
 
     setTimeout(bind(() => {

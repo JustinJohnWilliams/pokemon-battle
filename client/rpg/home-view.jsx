@@ -49,7 +49,7 @@ export class HomeView extends Component {
     return (
       <div>
         <div>
-          <p>There is a rock face jetting out. It looks freaking scary.</p>
+          <p>There is a rock face jutting out. It looks freaking scary.</p>
           <a href="javascript:;">Go be awesome over there.</a>
         </div>
         <hr />
