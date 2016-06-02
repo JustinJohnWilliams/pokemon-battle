@@ -16,7 +16,9 @@ export class RpgView extends Component {
       isGameOver: PropTypes.boolean.isRequired,
       playByPlay: PropTypes.array.isRequired,
       activeTurnThreshold: PropTypes.number.isRequired,
-      team: PropTypes.array.isRequired
+      team: PropTypes.array.isRequired,
+      askMommyForHelp: PropTypes.func.isRequired,
+      momFeelsPity: PropTypes.boolean.isRequired
     };
   }
 
@@ -26,7 +28,9 @@ export class RpgView extends Component {
         <div>
           <HomeView
             changeLocation={this.props.changeLocation}
+            askMommyForHelp={this.props.askMommyForHelp}
             team={this.props.team}
+            momFeelsPity={this.props.momFeelsPity}
           />
         </div>
       );

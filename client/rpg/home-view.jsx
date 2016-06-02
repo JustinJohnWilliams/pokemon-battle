@@ -5,7 +5,9 @@ export class HomeView extends Component {
   static propTypes() {
     return {
       changeLocation: PropTypes.func.isRequired,
-      team: PropTypes.array.isRequired
+      team: PropTypes.array.isRequired,
+      askMommyForHelp: PropTypes.func.isRequired,
+      momFeelsPity: PropTypes.boolean.isRequired
     };
   }
 
@@ -13,24 +15,41 @@ export class HomeView extends Component {
     this.props.changeLocation('forest');
   }
 
-  renderTeam() {
+  renderAskMommy() {
+    if (this.props.team.length > 0) return null;
     return (
-      <ul>
-        {map(uniq(this.props.team), p => <li>{p}</li>)}
-      </ul>
+      <div>
+        <a href="javascript:;" onClick={this.props.askMommyForHelp}>Ask Mommy for help</a>
+      </div>
     );
   }
 
-  render() {
+  renderTeam() {
+    if (this.props.team.length == 0) return null;
+    if (this.props.momFeelsPity)
+      return (
+        <div>
+          <p>Your mom feels pity for your sorry ass and gives you a Pikachu.</p>
+          <p>She curses you for being a &quot;worthless millenial&quot; and tells you to go make soemthing of yourself.</p>
+        </div>
+      );
     return (
       <div>
-        <div>You are currently being awesome at your home.</div>
-        <br />
         <div>Your bitches: </div>
-        {this.renderTeam()}
+        <ul>
+          {map(uniq(this.props.team), p => <li>{p}</li>)}
+        </ul>
         <hr />
+      </div>
+    );
+  }
+
+  renderAdventures() {
+    if (this.props.team.length == 0) return null;
+    return (
+      <div>
         <div>
-          <p>There is a rock face jutting out. It looks freaking scary.</p>
+          <p>There is a rock face jetting out. It looks freaking scary.</p>
           <a href="javascript:;">Go be awesome over there.</a>
         </div>
         <hr />
@@ -45,6 +64,18 @@ export class HomeView extends Component {
           </a>
         </div>
         <hr />
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        <div>You are currently being worthless at your home.</div>
+        <br />
+        {this.renderAskMommy()}
+        {this.renderTeam()}
+        {this.renderAdventures()}
       </div>
     );
   }

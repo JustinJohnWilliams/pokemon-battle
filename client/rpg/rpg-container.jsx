@@ -7,13 +7,24 @@ export class RpgContainer extends Component {
     super();
     this.state = {
       location: 'home',
-      team: ['Pikachu'],
+      momFeelsPity: false,
+      team: [],
       playByPlay: []
     };
   }
 
   changeLocation(newLocation) {
-    this.setState({ location: newLocation });
+    this.setState({
+      location: newLocation,
+      momFeelsPity: false
+    });
+  }
+
+  askMommyForHelp(something) {
+    this.setState({
+      team: this.state.team.concat('Pikachu'),
+      momFeelsPity: true
+    });
   }
 
   goHome() {
@@ -123,11 +134,12 @@ export class RpgContainer extends Component {
     const battling = this.state.battling;
     const chosen = this.state.chosen;
     const percent = 1.0 - (this.state.battling.hp / 50);
-    const team = this.state.team.concat(this.state.battling.name);
+    let team = this.state.team;
     chosen.at -= this.activeTurnThreshold();
 
     if (Math.random(1) < percent) {
       battling.captured = true;
+      team = team.concat(this.state.battling.name);
 
       this.setState({
         team,
@@ -142,6 +154,7 @@ export class RpgContainer extends Component {
       }, this.tickBattleCore());
     }
   }
+
 
   render() {
     return (
@@ -158,6 +171,8 @@ export class RpgContainer extends Component {
         activeTurnThreshold={this.activeTurnThreshold()}
         chosen={this.state.chosen}
         team={this.state.team}
+        askMommyForHelp={this.askMommyForHelp.bind(this)}
+        momFeelsPity={this.state.momFeelsPity}
       />
     );
   }
