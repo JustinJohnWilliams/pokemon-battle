@@ -17,6 +17,7 @@ export class RpgView extends Component {
       playByPlay: PropTypes.array.isRequired,
       activeTurnThreshold: PropTypes.number.isRequired,
       team: PropTypes.array.isRequired,
+      inventory: PropTypes.array.isRequired,
       askMommyForHelp: PropTypes.func.isRequired,
       momFeelsPity: PropTypes.boolean.isRequired
     };
@@ -30,6 +31,7 @@ export class RpgView extends Component {
             changeLocation={this.props.changeLocation}
             askMommyForHelp={this.props.askMommyForHelp}
             team={this.props.team}
+            inventory={this.props.inventory}
             momFeelsPity={this.props.momFeelsPity}
           />
         </div>

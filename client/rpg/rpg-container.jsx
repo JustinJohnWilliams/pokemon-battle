@@ -18,7 +18,8 @@ export class RpgContainer extends Component {
       location: 'home',
       momFeelsPity: false,
       team: [],
-      playByPlay: []
+      playByPlay: [],
+      inventory: []
     };
   }
 
@@ -84,14 +85,20 @@ export class RpgContainer extends Component {
   }
 
   _captureBattling() {
-    this.setState(
-      captureBattling(
-        this.state.chosen,
-        this.state.battling,
-        this.state.team,
-        this.state.playByPlay));
-  }
+    const currentInventoryCount = this.state.inventory.count;
 
+    const result = captureBattling(
+      this.state.chosen,
+      this.state.battling,
+      this.state.inventory,
+      this.state.playByPlay);
+
+    if (currentInventoryCount != result.inventory.count) {
+      this.setState(result, this.tickBattleCore);
+    } else {
+      this.setState(result);
+    }
+  }
 
   render() {
     return (
@@ -108,6 +115,7 @@ export class RpgContainer extends Component {
         activeTurnThreshold={activeTurnThreshold()}
         chosen={this.state.chosen}
         team={this.state.team}
+        inventory={this.state.inventory}
         askMommyForHelp={this.askMommyForHelp.bind(this)}
         momFeelsPity={this.state.momFeelsPity}
       />

@@ -93,23 +93,23 @@ export function attackBattling(chosen, battling, playByPlay) {
   };
 }
 
-export function captureBattling(chosen, battling, team, playByPlay) {
+export function captureBattling(chosen, battling, inventory, playByPlay) {
   const percent = 1.0 - (battling.hp / 50);
-  team = team.concat(battling.name);
+  inventory = inventory.concat(battling.name);
   chosen.at -= activeTurnThreshold();
 
   if (Math.random(1) < percent) {
     battling.captured = true;
 
     return {
-      team,
+      inventory,
       chosen,
       playByPlay: playByPlay.concat(`${battling.name} succumbs to your ball.`)
     };
   }
 
   return {
-    team,
+    inventory,
     chosen,
     playByPlay: playByPlay.concat(`Your ball hits ${battling.name} in the head, but is batted away. Too stronk.`)
   };

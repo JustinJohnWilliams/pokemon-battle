@@ -6,6 +6,7 @@ export class HomeView extends Component {
     return {
       changeLocation: PropTypes.func.isRequired,
       team: PropTypes.array.isRequired,
+      inventory: PropTypes.array.isRequired,
       askMommyForHelp: PropTypes.func.isRequired,
       momFeelsPity: PropTypes.boolean.isRequired
     };
@@ -19,12 +20,39 @@ export class HomeView extends Component {
     if (this.props.team.length > 0) return null;
     return (
       <div>
-        <a href="javascript:;" onClick={this.props.askMommyForHelp}>Ask Mommy for help</a>
+        <a href="javascript:;" onClick={this.props.askMommyForHelp}>Ask Mommy for help.</a>
       </div>
     );
   }
 
   renderTeam() {
+    return (
+      <div>
+        <div>Your bitches: </div>
+        <ul>
+          {map(uniq(this.props.team), p => <li>{p}</li>)}
+        </ul>
+        <hr />
+      </div>
+    );
+  }
+
+  renderInventory() {
+    if (this.props.inventory.count == 0) null;
+
+    return (
+      <div>
+        <div>Chillin&#39; at the crib: </div>
+        <ul>
+          {map(this.props.inventory, p => <li>{p}</li>)}
+        </ul>
+        <hr />
+      </div>
+    );
+  }
+
+
+  renderHome() {
     if (this.props.team.length == 0) return null;
     if (this.props.momFeelsPity) {
       return (
@@ -38,11 +66,8 @@ export class HomeView extends Component {
 
     return (
       <div>
-        <div>Your bitches: </div>
-        <ul>
-          {map(uniq(this.props.team), p => <li>{p}</li>)}
-        </ul>
-        <hr />
+        {this.renderTeam()}
+        {this.renderInventory()}
       </div>
     );
   }
@@ -77,7 +102,7 @@ export class HomeView extends Component {
         <div>You are currently being worthless at your home.</div>
         <br />
         {this.renderAskMommy()}
-        {this.renderTeam()}
+        {this.renderHome()}
         {this.renderAdventures()}
       </div>
     );
