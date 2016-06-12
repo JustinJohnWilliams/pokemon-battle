@@ -66,7 +66,7 @@
 	
 	var _pokemonBattleContainer = __webpack_require__(40);
 	
-	var _rpgContainer = __webpack_require__(46);
+	var _rpgContainer = __webpack_require__(45);
 	
 	function initSandboxApp() {
 	  ReactDOM.render(React.createElement(_sandboxContainer.SandboxContainer, null), document.getElementById('content'));
@@ -14114,8 +14114,7 @@
 	}(_react.Component);
 
 /***/ },
-/* 45 */,
-/* 46 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14130,6 +14129,8 @@
 	var _react = __webpack_require__(6);
 	
 	var _lodash = __webpack_require__(3);
+	
+	var _rpgView = __webpack_require__(46);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -14164,11 +14165,16 @@
 	      this.changeLocation('home');
 	    }
 	  }, {
+	    key: 'activeTurnThreshold',
+	    value: function activeTurnThreshold() {
+	      return 1800;
+	    }
+	  }, {
 	    key: 'tickPokemon',
 	    value: function tickPokemon(pokemon) {
 	      if (!pokemon.canAttack) pokemon.at += pokemon.speed;
 	
-	      if (pokemon.at >= 1800) {
+	      if (pokemon.at >= this.activeTurnThreshold()) {
 	        pokemon.canAttack = true;
 	      } else {
 	        pokemon.canAttack = false;
@@ -14194,9 +14200,13 @@
 	
 	      if (battling.canAttack) {
 	        chosen.hp -= 10;
-	        battling.at -= 1800;
+	        battling.at -= this.activeTurnThreshold();
 	        battling.canAttack = false;
 	        playByPlay = playByPlay.concat(this.state.battling.name + ' attacks ' + this.state.chosen.name + ' for 10.');
+	
+	        if (chosen.hp <= 0) {
+	          playByPlay = playByPlay.concat(this.state.chosen.name + ' has fallen. Mauled and bloody. Poke-guts everywhere.');
+	        }
 	      }
 	
 	      this.setState({
@@ -14216,12 +14226,18 @@
 	      battling.hp -= 10;
 	
 	      var chosen = this.state.chosen;
-	      chosen.at -= 1800;
+	      chosen.at -= this.activeTurnThreshold();
+	
+	      var playByPlay = this.state.playByPlay.concat(this.state.chosen.name + ' attacks ' + this.state.battling.name + ' for 10.');
+	
+	      if (battling.hp <= 0) {
+	        playByPlay = playByPlay.concat(this.state.battling.name + ' has fallen. Mauled and bloody. Poke-guts everywhere.');
+	      }
 	
 	      this.setState({
 	        battling: battling,
 	        chosen: chosen,
-	        playByPlay: this.state.playByPlay.concat(this.state.chosen.name + ' attacks ' + this.state.battling.name + ' for 10.')
+	        playByPlay: playByPlay
 	      });
 	    }
 	  }, {
@@ -14258,19 +14274,23 @@
 	    key: 'captureBattling',
 	    value: function captureBattling() {
 	      var battling = this.state.battling;
+	      var chosen = this.state.chosen;
 	      var percent = 1.0 - this.state.battling.hp / 50;
 	      var team = this.state.team.concat(this.state.battling.name);
+	      chosen.at -= this.activeTurnThreshold();
 	
 	      if (Math.random(1) < percent) {
 	        battling.captured = true;
 	
 	        this.setState({
 	          team: team,
+	          chosen: chosen,
 	          playByPlay: this.state.playByPlay.concat(battling.name + ' succumbs to your ball.')
 	        }, this.tickBattleCore());
 	      } else {
 	        this.setState({
 	          team: team,
+	          chosen: chosen,
 	          playByPlay: this.state.playByPlay.concat('Your ball hits ' + battling.name + ' in the head, but is batted away. Too stronk.')
 	        }, this.tickBattleCore());
 	      }
@@ -14278,7 +14298,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return React.createElement(RpgView, {
+	      return React.createElement(_rpgView.RpgView, {
 	        location: this.state.location,
 	        battling: this.state.battling,
 	        changeLocation: this.changeLocation.bind(this),
@@ -14288,12 +14308,525 @@
 	        isGameOver: this.isGameOver(),
 	        captureBattling: this.captureBattling.bind(this),
 	        playByPlay: this.state.playByPlay,
-	        chosen: this.state.chosen
+	        activeTurnThreshold: this.activeTurnThreshold(),
+	        chosen: this.state.chosen,
+	        team: this.state.team
 	      });
 	    }
 	  }]);
 
 	  return RpgContainer;
+	}(_react.Component);
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.RpgView = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(6);
+	
+	var _forestView = __webpack_require__(47);
+	
+	var _homeView = __webpack_require__(49);
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var RpgView = exports.RpgView = function (_Component) {
+	  _inherits(RpgView, _Component);
+	
+	  function RpgView() {
+	    _classCallCheck(this, RpgView);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(RpgView).apply(this, arguments));
+	  }
+	
+	  _createClass(RpgView, [{
+	    key: 'render',
+	    value: function render() {
+	      if (this.props.location == 'home') {
+	        return React.createElement(
+	          'div',
+	          null,
+	          React.createElement(_homeView.HomeView, {
+	            changeLocation: this.props.changeLocation,
+	            team: this.props.team
+	          })
+	        );
+	      }
+	
+	      if (this.props.location == 'forest') {
+	        return React.createElement(
+	          'div',
+	          null,
+	          React.createElement(_forestView.ForestView, {
+	            battling: this.props.battling,
+	            goHome: this.props.goHome,
+	            findTrouble: this.props.findTrouble,
+	            attackBattling: this.props.attackBattling,
+	            isGameOver: this.props.isGameOver,
+	            captureBattling: this.props.captureBattling,
+	            playByPlay: this.props.playByPlay,
+	            chosen: this.props.chosen,
+	            activeTurnThreshold: this.props.activeTurnThreshold
+	          })
+	        );
+	      }
+	
+	      return null;
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: function propTypes() {
+	      return {
+	        location: _react.PropTypes.string.isRequired,
+	        changeLocation: _react.PropTypes.func.isRequired,
+	        captureBattling: _react.PropTypes.func.isRequired,
+	        attackBattling: _react.PropTypes.func.isRequired,
+	        findTrouble: _react.PropTypes.func.isRequired,
+	        goHome: _react.PropTypes.func.isRequired,
+	        battling: _react.PropTypes.object.isRequired,
+	        chosen: _react.PropTypes.object.isRequired,
+	        isGameOver: _react.PropTypes.boolean.isRequired,
+	        playByPlay: _react.PropTypes.array.isRequired,
+	        activeTurnThreshold: _react.PropTypes.number.isRequired,
+	        team: _react.PropTypes.array.isRequired
+	      };
+	    }
+	  }]);
+
+	  return RpgView;
+	}(_react.Component);
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.ForestView = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(6);
+	
+	var _battleArenaView = __webpack_require__(48);
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ForestView = exports.ForestView = function (_Component) {
+	  _inherits(ForestView, _Component);
+	
+	  function ForestView() {
+	    _classCallCheck(this, ForestView);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ForestView).apply(this, arguments));
+	  }
+	
+	  _createClass(ForestView, [{
+	    key: 'renderOptions',
+	    value: function renderOptions() {
+	      if (this.props.battling) return null;
+	
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'p',
+	          null,
+	          'You are chillin\' like a villian right now.'
+	        ),
+	        React.createElement(
+	          'a',
+	          { href: 'javascript:;', onClick: this.props.findTrouble },
+	          'Go look for some trouble.'
+	        ),
+	        React.createElement('br', null),
+	        React.createElement(
+	          'a',
+	          { href: 'javascript:;', onClick: this.props.goHome },
+	          'Go home.'
+	        ),
+	        React.createElement('hr', null)
+	      );
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'div',
+	          null,
+	          'You are currently being awesome in the forest.'
+	        ),
+	        React.createElement(
+	          'ul',
+	          null,
+	          React.createElement(
+	            'li',
+	            null,
+	            'You has a pikachu. It says "pika" constantly.'
+	          )
+	        ),
+	        React.createElement('hr', null),
+	        this.renderOptions(),
+	        React.createElement(
+	          'div',
+	          null,
+	          React.createElement(_battleArenaView.BattleArenaView, {
+	            chosen: this.props.chosen,
+	            battling: this.props.battling,
+	            isGameOver: this.props.isGameOver,
+	            captureBattling: this.props.captureBattling,
+	            playByPlay: this.props.playByPlay,
+	            attackBattling: this.props.attackBattling,
+	            goHome: this.props.goHome,
+	            activeTurnThreshold: this.props.activeTurnThreshold
+	          })
+	        )
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: function propTypes() {
+	      return {
+	        battling: _react.PropTypes.object.isRequired,
+	        findTrouble: _react.PropTypes.func.isRequired,
+	        goHome: _react.PropTypes.func.isRequired,
+	        chosen: _react.PropTypes.object.isRequired,
+	        isGameOver: _react.PropTypes.func.isRequired,
+	        captureBattling: _react.PropTypes.func.captureBattling,
+	        playByPlay: _react.PropTypes.array.isRequired,
+	        attackBattling: _react.PropTypes.func.isRequired,
+	        activeTurnThreshold: _react.PropTypes.number.isRequired
+	      };
+	    }
+	  }]);
+
+	  return ForestView;
+	}(_react.Component);
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.BattleArenaView = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(6);
+	
+	var _lodash = __webpack_require__(3);
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var BattleArenaView = exports.BattleArenaView = function (_Component) {
+	  _inherits(BattleArenaView, _Component);
+	
+	  function BattleArenaView() {
+	    _classCallCheck(this, BattleArenaView);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(BattleArenaView).apply(this, arguments));
+	  }
+	
+	  _createClass(BattleArenaView, [{
+	    key: 'renderProgessBar',
+	    value: function renderProgessBar(pokemon) {
+	      var percent = Math.round(pokemon.at / this.props.activeTurnThreshold * 100);
+	
+	      if (percent < 100) {
+	        return React.createElement('div', { style: {
+	            background: 'linear-gradient(90deg, green, white ' + percent + '%, white)',
+	            border: 'solid 1px black',
+	            width: '100%',
+	            height: '10px'
+	          }
+	        });
+	      }
+	
+	      return React.createElement('div', { style: {
+	          background: 'linear-gradient(90deg, green, green ' + percent + '%, white)',
+	          border: 'solid 1px black',
+	          width: '100%',
+	          height: '10px'
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'renderAttack',
+	    value: function renderAttack() {
+	      if (!this.props.chosen.canAttack) return null;
+	      if (this.props.isGameOver) return null;
+	
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'a',
+	          { href: 'javascript:;', onClick: this.props.attackBattling },
+	          'Attack'
+	        ),
+	        React.createElement('br', null),
+	        React.createElement(
+	          'a',
+	          { href: 'javascript:;', onClick: this.props.captureBattling },
+	          'Throw dat ball'
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'renderPostBattle',
+	    value: function renderPostBattle() {
+	      if (!this.props.isGameOver) return null;
+	
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'a',
+	          { href: 'javascript:;', onClick: this.props.goHome },
+	          'Go home.'
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'renderPlayPlay',
+	    value: function renderPlayPlay() {
+	      return React.createElement(
+	        'div',
+	        null,
+	        (0, _lodash.map)(this.props.playByPlay, function (p) {
+	          return React.createElement(
+	            'div',
+	            null,
+	            p
+	          );
+	        })
+	      );
+	    }
+	  }, {
+	    key: 'renderField',
+	    value: function renderField() {
+	      if (!this.props.battling) return null;
+	
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'div',
+	          null,
+	          React.createElement(
+	            'h2',
+	            null,
+	            this.props.battling.name,
+	            ' (hp: ',
+	            this.props.battling.hp,
+	            ')'
+	          ),
+	          React.createElement('hr', null),
+	          this.props.battling.actionText,
+	          React.createElement('hr', null),
+	          this.renderProgessBar(this.props.battling),
+	          React.createElement('hr', null)
+	        ),
+	        React.createElement(
+	          'div',
+	          null,
+	          React.createElement(
+	            'h2',
+	            null,
+	            this.props.chosen.name,
+	            ' (hp: ',
+	            this.props.chosen.hp,
+	            ')'
+	          ),
+	          React.createElement('hr', null),
+	          this.props.chosen.actionText,
+	          React.createElement('hr', null),
+	          this.renderProgessBar(this.props.chosen),
+	          React.createElement('hr', null),
+	          this.renderAttack(),
+	          this.renderPostBattle(),
+	          React.createElement('hr', null),
+	          this.renderPlayPlay()
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        null,
+	        this.renderField()
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: function propTypes() {
+	      return {
+	        chosen: _react.PropTypes.object.isRequired,
+	        isGameOver: _react.PropTypes.boolean.isRequired,
+	        attackBattling: _react.PropTypes.func.isRequired,
+	        captureBattling: _react.PropTypes.func.isRequired,
+	        playByPlay: _react.PropTypes.array.isRequired,
+	        goHome: _react.PropTypes.func.isRequired,
+	        battling: _react.PropTypes.object.isRequired,
+	        activeTurnThreshold: _react.PropTypes.number.isRequired
+	      };
+	    }
+	  }]);
+
+	  return BattleArenaView;
+	}(_react.Component);
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.HomeView = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(6);
+	
+	var _lodash = __webpack_require__(3);
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var HomeView = exports.HomeView = function (_Component) {
+	  _inherits(HomeView, _Component);
+	
+	  function HomeView() {
+	    _classCallCheck(this, HomeView);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(HomeView).apply(this, arguments));
+	  }
+	
+	  _createClass(HomeView, [{
+	    key: '_goToForest',
+	    value: function _goToForest(e) {
+	      this.props.changeLocation('forest');
+	    }
+	  }, {
+	    key: 'renderTeam',
+	    value: function renderTeam() {
+	      return React.createElement(
+	        'ul',
+	        null,
+	        (0, _lodash.map)(this.props.team, function (p) {
+	          return React.createElement(
+	            'li',
+	            null,
+	            p
+	          );
+	        })
+	      );
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'div',
+	          null,
+	          'You are currently being awesome at your home.'
+	        ),
+	        React.createElement('br', null),
+	        React.createElement(
+	          'div',
+	          null,
+	          'Your bitches: '
+	        ),
+	        this.renderTeam(),
+	        React.createElement('hr', null),
+	        React.createElement(
+	          'div',
+	          null,
+	          React.createElement(
+	            'p',
+	            null,
+	            'There is a rock face jutting out. It looks freaking scary.'
+	          ),
+	          React.createElement(
+	            'a',
+	            { href: 'javascript:;' },
+	            'Go be awesome over there.'
+	          )
+	        ),
+	        React.createElement('hr', null),
+	        React.createElement(
+	          'div',
+	          null,
+	          React.createElement(
+	            'p',
+	            null,
+	            'There is a line of trees off in the distance.'
+	          ),
+	          React.createElement(
+	            'a',
+	            {
+	              href: 'javascript:;',
+	              'data-ui-location': 'forest',
+	              onClick: this._goToForest.bind(this)
+	            },
+	            'Go be awesome over there.'
+	          )
+	        ),
+	        React.createElement('hr', null)
+	      );
+	    }
+	  }], [{
+	    key: 'propTypes',
+	    value: function propTypes() {
+	      return {
+	        changeLocation: _react.PropTypes.func.isRequired,
+	        team: _react.PropTypes.array.isRequired
+	      };
+	    }
+	  }]);
+
+	  return HomeView;
 	}(_react.Component);
 
 /***/ }

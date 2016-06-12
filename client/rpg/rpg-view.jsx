@@ -13,7 +13,7 @@ export class RpgView extends Component {
       goHome: PropTypes.func.isRequired,
       battling: PropTypes.object.isRequired,
       chosen: PropTypes.object.isRequired,
-      isGameOver: PropTypes.boolean.isRequired,
+      isBattleOver: PropTypes.boolean.isRequired,
       playByPlay: PropTypes.array.isRequired,
       activeTurnThreshold: PropTypes.number.isRequired,
       team: PropTypes.array.isRequired,
@@ -44,7 +44,7 @@ export class RpgView extends Component {
             goHome={this.props.goHome}
             findTrouble={this.props.findTrouble}
             attackBattling={this.props.attackBattling}
-            isGameOver={this.props.isGameOver}
+            isBattleOver={this.props.isBattleOver}
             captureBattling={this.props.captureBattling}
             playByPlay={this.props.playByPlay}
             chosen={this.props.chosen}

@@ -5,7 +5,7 @@ export class BattleArenaView extends Component {
   static propTypes() {
     return {
       chosen: PropTypes.object.isRequired,
-      isGameOver: PropTypes.boolean.isRequired,
+      isBattleOver: PropTypes.boolean.isRequired,
       attackBattling: PropTypes.func.isRequired,
       captureBattling: PropTypes.func.isRequired,
       playByPlay: PropTypes.array.isRequired,
@@ -43,7 +43,7 @@ export class BattleArenaView extends Component {
 
   renderAttack() {
     if (!this.props.chosen.canAttack) return null;
-    if (this.props.isGameOver) return null;
+    if (this.props.isBattleOver) return null;
 
     return (
       <div>
@@ -55,7 +55,7 @@ export class BattleArenaView extends Component {
   }
 
   renderPostBattle() {
-    if (!this.props.isGameOver) return null;
+    if (!this.props.isBattleOver) return null;
 
     return (
       <div>

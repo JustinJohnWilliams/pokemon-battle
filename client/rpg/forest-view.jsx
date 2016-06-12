@@ -8,7 +8,7 @@ export class ForestView extends Component {
       findTrouble: PropTypes.func.isRequired,
       goHome: PropTypes.func.isRequired,
       chosen: PropTypes.object.isRequired,
-      isGameOver: PropTypes.func.isRequired,
+      isBattleOver: PropTypes.func.isRequired,
       captureBattling: PropTypes.func.captureBattling,
       playByPlay: PropTypes.array.isRequired,
       attackBattling: PropTypes.func.isRequired,
@@ -42,7 +42,7 @@ export class ForestView extends Component {
           <BattleArenaView
             chosen={this.props.chosen}
             battling={this.props.battling}
-            isGameOver={this.props.isGameOver}
+            isBattleOver={this.props.isBattleOver}
             captureBattling={this.props.captureBattling}
             playByPlay={this.props.playByPlay}
             attackBattling={this.props.attackBattling}
