@@ -70,11 +70,11 @@ export function attackBattling(chosen, battling, playByPlay) {
 
 export function captureBattling(chosen, battling, inventory, playByPlay) {
   const percent = 1.0 - (battling.hp / 50);
-  inventory = inventory.concat(battling.name);
   chosen.at -= activeTurnThreshold();
 
   if (Math.random(1) < percent) {
     battling.captured = true;
+    inventory = inventory.concat(battling);
 
     return {
       inventory,

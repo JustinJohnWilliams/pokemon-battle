@@ -13,7 +13,7 @@ export class TeamView extends Component {
       <div>
         <div>Your posse: </div>
         <ul>
-          {map(uniq(this.props.team), p => <li>{p}</li>)}
+          {map(uniq(this.props.team), p => <li>{p.name}</li>)}
         </ul>
         <hr />
       </div>

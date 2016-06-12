@@ -51,7 +51,7 @@ export class RpgContainer extends Component {
 
   askMommyForHelp(something) {
     this.setState({
-      team: this.state.team.concat(pikachu().name),
+      team: this.state.team.concat(pikachu()),
       momFeelsPity: true
     }, this.saveGame);
   }
@@ -96,7 +96,7 @@ export class RpgContainer extends Component {
         chosen: pikachu(),
         battling: geodude(),
         playByPlay: [`The throwdown has begun between ${pikachu().name} and ${geodude().name}. Who will the bitch be?`]
-      });
+      }, this.tickBattle);
     }
   }
 

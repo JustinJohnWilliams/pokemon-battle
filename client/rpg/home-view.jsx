@@ -1,5 +1,6 @@
 import { Component, PropTypes } from 'react';
 import { TeamView } from './team-view.jsx';
+import { map } from 'lodash';
 
 export class HomeView extends Component {
   static propTypes() {
@@ -30,13 +31,13 @@ export class HomeView extends Component {
   }
 
   renderInventory() {
-    if (this.props.inventory.count == 0) null;
+    if (this.props.inventory.length == 0) return null;
 
     return (
       <div>
         <div>Chillin&#39; at the crib: </div>
         <ul>
-          {map(this.props.inventory, p => <li>{p}</li>)}
+          {map(this.props.inventory, p => <li>{p.name}</li>)}
         </ul>
         <hr />
       </div>
