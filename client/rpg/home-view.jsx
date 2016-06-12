@@ -1,5 +1,5 @@
 import { Component, PropTypes } from 'react';
-import { map, uniq } from 'lodash';
+import { TeamView } from './team-view.jsx';
 
 export class HomeView extends Component {
   static propTypes() {
@@ -16,23 +16,15 @@ export class HomeView extends Component {
     this.props.changeLocation('forest');
   }
 
+  _goToCanyon(e) {
+    this.props.changeLocation('canyon');
+  }
+
   renderAskMommy() {
     if (this.props.team.length > 0) return null;
     return (
       <div>
         <a href="javascript:;" onClick={this.props.askMommyForHelp}>Ask Mommy for help.</a>
-      </div>
-    );
-  }
-
-  renderTeam() {
-    return (
-      <div>
-        <div>Your bitches: </div>
-        <ul>
-          {map(uniq(this.props.team), p => <li>{p}</li>)}
-        </ul>
-        <hr />
       </div>
     );
   }
@@ -66,7 +58,7 @@ export class HomeView extends Component {
 
     return (
       <div>
-        {this.renderTeam()}
+        <TeamView team={this.props.team} />
         {this.renderInventory()}
       </div>
     );
@@ -78,7 +70,11 @@ export class HomeView extends Component {
       <div>
         <div>
           <p>There is a rock face jutting out. It looks freaking scary.</p>
-          <a href="javascript:;">Go be awesome over there.</a>
+          <a
+            href="javascript:;"
+            data-ui-location="canyon"
+            onClick={this._goToCanyon.bind(this)}
+          >Go be awesome over there.</a>
         </div>
         <hr />
         <div>

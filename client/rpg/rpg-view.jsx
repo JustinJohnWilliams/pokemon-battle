@@ -1,6 +1,7 @@
 import { Component, PropTypes } from 'react';
 import { ForestView } from './forest-view.jsx';
 import { HomeView } from './home-view.jsx';
+import { CanyonView } from './canyon-view.jsx';
 
 export class RpgView extends Component {
   static propTypes() {
@@ -51,6 +52,26 @@ export class RpgView extends Component {
             playByPlay={this.props.playByPlay}
             chosen={this.props.chosen}
             activeTurnThreshold={this.props.activeTurnThreshold}
+            team={this.props.team}
+          />
+        </div>
+      );
+    }
+
+    if (this.props.location == 'canyon') {
+      return (
+        <div>
+          <CanyonView
+            battling={this.props.battling}
+            goHome={this.props.goHome}
+            findTrouble={this.props.findTrouble}
+            attackBattling={this.props.attackBattling}
+            isBattleOver={this.props.isBattleOver}
+            captureBattling={this.props.captureBattling}
+            playByPlay={this.props.playByPlay}
+            chosen={this.props.chosen}
+            activeTurnThreshold={this.props.activeTurnThreshold}
+            team={this.props.team}
           />
         </div>
       );

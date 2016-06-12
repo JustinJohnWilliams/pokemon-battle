@@ -6,10 +6,13 @@ import {
   activeTurnThreshold,
   isBattleOver,
   attackBattling,
-  captureBattling,
-  pikachu,
-  bulbasaur
+  captureBattling
 } from './rpj.js';
+import {
+  pikachu,
+  bulbasaur,
+  geodude
+} from './pokemon.js';
 
 export class RpgContainer extends Component {
   constructor() {
@@ -48,7 +51,7 @@ export class RpgContainer extends Component {
 
   askMommyForHelp(something) {
     this.setState({
-      team: this.state.team.concat('Pikachu'),
+      team: this.state.team.concat(pikachu().name),
       momFeelsPity: true
     }, this.saveGame);
   }
@@ -86,6 +89,14 @@ export class RpgContainer extends Component {
         battling: bulbasaur(),
         playByPlay: [`The throwdown has begun between ${pikachu().name} and ${bulbasaur().name}. Who will the bitch be?`]
       }, this.tickBattle);
+    }
+
+    if (this.state.location == 'canyon') {
+      this.setState({
+        chosen: pikachu(),
+        battling: geodude(),
+        playByPlay: [`The throwdown has begun between ${pikachu().name} and ${geodude().name}. Who will the bitch be?`]
+      });
     }
   }
 

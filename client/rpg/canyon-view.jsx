@@ -2,7 +2,7 @@ import { Component, PropTypes } from 'react';
 import { BattleArenaView } from './battle-arena-view.jsx';
 import { TeamView } from './team-view.jsx';
 
-export class ForestView extends Component {
+export class CanyonView extends Component {
   static propTypes() {
     return {
       battling: PropTypes.object.isRequired,
@@ -34,7 +34,7 @@ export class ForestView extends Component {
   render() {
     return (
       <div>
-        <div>You are currently being awesome in the forest.</div>
+        <div>You are currently being awesome in the canyon.</div>
         <TeamView team={this.props.team} />
         <hr />
         {this.renderOptions()}
