@@ -14,7 +14,30 @@ import {
 export class RpgContainer extends Component {
   constructor() {
     super();
-    this.state = {
+    this.state = this.loadGame();
+  }
+
+  changeLocation(newLocation) {
+    this.setState({
+      location: newLocation,
+      momFeelsPity: false
+    }, this.saveGame);
+  }
+
+  saveGame() {
+    localStorage.setItem('game', JSON.stringify(this.state));
+  }
+
+  loadGame() {
+    const savedGame = localStorage.getItem('game');
+
+    if (!savedGame) return this.newGame();
+
+    else return JSON.parse(savedGame);
+  }
+
+  newGame() {
+    return {
       location: 'home',
       momFeelsPity: false,
       team: [],
@@ -23,18 +46,11 @@ export class RpgContainer extends Component {
     };
   }
 
-  changeLocation(newLocation) {
-    this.setState({
-      location: newLocation,
-      momFeelsPity: false
-    });
-  }
-
   askMommyForHelp(something) {
     this.setState({
       team: this.state.team.concat('Pikachu'),
       momFeelsPity: true
-    });
+    }, this.saveGame);
   }
 
   goHome() {
@@ -42,7 +58,10 @@ export class RpgContainer extends Component {
   }
 
   tickBattle() {
-    if (this._isBattleOver()) return;
+    if (this._isBattleOver()) {
+      this.saveGame();
+      return;
+    }
 
     this.tickBattleCore();
   }
@@ -81,7 +100,7 @@ export class RpgContainer extends Component {
       attackBattling(
         this.state.chosen,
         this.state.battling,
-        this.state.playByPlay));
+        this.state.playByPlay), this.saveGame);
   }
 
   _captureBattling() {
@@ -94,9 +113,12 @@ export class RpgContainer extends Component {
       this.state.playByPlay);
 
     if (currentInventoryCount != result.inventory.count) {
-      this.setState(result, this.tickBattleCore);
+      this.setState(result, bind(() => {
+        this.tickBattleCore();
+        this.saveGame();
+      }, this));
     } else {
-      this.setState(result);
+      this.setState(result, this.saveGame);
     }
   }
 

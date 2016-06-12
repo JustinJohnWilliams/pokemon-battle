@@ -52,7 +52,13 @@ let openBrowser _ =
     options.AddArgument("--enable-logging")
     options.AddArgument("--v=0")
     start (ChromeWithOptions options)
+    deleteCookies ()
+
+let deleteCookies _ =
     browser.Manage().Cookies.DeleteAllCookies()
+    (js """
+          localStorage.removeItem('game')
+        """)
 
 let ids _ =
   (js """
@@ -133,6 +139,7 @@ JsonValue.Parse response.EntityBody.Value
 
 quit()
 
+deleteCookies ()
 url "http://localhost:3000/rpg"
 click "Ask Mommy for help."
 click "[data-ui-location='forest']"
