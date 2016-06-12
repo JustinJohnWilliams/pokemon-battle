@@ -101,7 +101,7 @@ export class RpgContainer extends Component {
         changeLocation={this.changeLocation.bind(this)}
         goHome={this.goHome.bind(this)}
         findTrouble={this.findTrouble.bind(this)}
-        attackBattling={this.attackBattling.bind(this)}
+        attackBattling={this._attackBattling.bind(this)}
         isBattleOver={this._isBattleOver()}
         captureBattling={this._captureBattling.bind(this)}
         playByPlay={this.state.playByPlay}

@@ -26,13 +26,16 @@ export class HomeView extends Component {
 
   renderTeam() {
     if (this.props.team.length == 0) return null;
-    if (this.props.momFeelsPity)
+    if (this.props.momFeelsPity) {
       return (
         <div>
           <p>Your mom feels pity for your sorry ass and gives you a Pikachu.</p>
-          <p>She curses you for being a &quot;worthless millenial&quot; and tells you to go make soemthing of yourself.</p>
+          <p>She curses you for being a &quot;worthless millenial&quot; and tells you to go make something of yourself.</p>
+          <hr />
         </div>
       );
+    }
+
     return (
       <div>
         <div>Your bitches: </div>

@@ -1,5 +1,12 @@
 import { get, remove } from 'lodash';
 
+function emptyPokemon() {
+  return {
+    hp: 0,
+    captured: false
+  };
+}
+
 export function pikachu() {
   return {
     name: 'Pikachu',
@@ -23,7 +30,7 @@ export function bulbasaur() {
 function tickPokemon(pokemon) {
   if (!pokemon.canAttack) pokemon.at += pokemon.speed;
 
-  if (pokemon.at >= this.activeTurnThreshold()) {
+  if (pokemon.at >= activeTurnThreshold()) {
     pokemon.canAttack = true;
   } else {
     pokemon.canAttack = false;
@@ -41,7 +48,7 @@ export function tickBattle(chosen, battling, team, playByPlay) {
 
   if (battling.canAttack) {
     chosen.hp -= 10;
-    battling.at -= this.activeTurnThreshold();
+    battling.at -= activeTurnThreshold();
     battling.canAttack = false;
     playByPlay = playByPlay.concat(`${battling.name} attacks ${chosen.name} for 10.`);
 
@@ -60,9 +67,12 @@ export function tickBattle(chosen, battling, team, playByPlay) {
 }
 
 export function isBattleOver(chosen, battling) {
-  if (get(this.state, 'chosen.hp', 0) <= 0 ||
-      get(this.state, 'battling.hp', 0) <= 0 ||
-      get(this.state, 'battling.captured', false) == true) return true;
+  chosen = chosen || emptyPokemon();
+  battling = battling || emptyPokemon();
+
+  if (chosen.hp <= 0 ||
+      battling.hp <= 0 ||
+      battling.captured == true) return true;
 
   return false;
 }

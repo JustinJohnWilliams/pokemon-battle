@@ -134,6 +134,7 @@ JsonValue.Parse response.EntityBody.Value
 quit()
 
 url "http://localhost:3000/rpg"
+click "Ask Mommy for help"
 click "[data-ui-location='forest']"
 click "Go home."
 click "Go look for some trouble."
