@@ -56,7 +56,7 @@ export class RpgContainer extends Component {
 
     setTimeout(bind(() => {
       this.tickBattle();
-    }, this), 500);
+    }, this), 250);
   }
 
   findTrouble() {
@@ -89,7 +89,7 @@ export class RpgContainer extends Component {
         this.state.chosen,
         this.state.battling,
         this.state.team,
-        this.state.playByPlay), this.tickBattleCore);
+        this.state.playByPlay));
   }
 
 
